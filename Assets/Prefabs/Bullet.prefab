@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpeed: 15
   decayTime: 5
-  damage: 10
+  damage: 15
   startingVelocity: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
 --- !u!54 &9114090967791437937

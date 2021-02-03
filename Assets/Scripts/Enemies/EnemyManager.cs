@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour {
 
-    const int threadGroupSize = 1024;
+    const int threadGroupSize = 64;
 
     public EnemySettings enemySettings;
     public Enemy enemyPrefab;
