@@ -11,14 +11,17 @@ public class Enemy : MonoBehaviour {
     public Vector2 seperationVector;
     public Vector2 alignmentVector;
     public Vector2 cohesionVector;
+    public Vector2 positionLimitVector;
     public bool debug = false;
 
     void Start() {
         position = new Vector2(this.transform.position.x, this.transform.position.z);
+        float startSpeed = (enemySettings.minSpeed + enemySettings.maxSpeed) / 2;
+        velocity = transform.forward * startSpeed;
     }
 
     void OnDrawGizmos() {
-        if (enemySettings != null) {
+        if (enemySettings != null && debug) {
             Gizmos.color = Color.green;
             foreach (var enemy in nearbyEnemies) {
                 Gizmos.DrawLine(this.transform.position, enemy.transform.position);
@@ -33,6 +36,8 @@ public class Enemy : MonoBehaviour {
                 Gizmos.DrawSphere(new Vector3(seperationVector.x, 0, seperationVector.y), 0.1f);
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(this.transform.position, new Vector3(alignmentVector.x, 0, alignmentVector.y) + this.transform.position);
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(this.transform.position, new Vector3(positionLimitVector.x, 0, positionLimitVector.y) + this.transform.position);
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawSphere(new Vector3(cohesionVector.x, 0, cohesionVector.y), 0.1f);
             }
@@ -59,16 +64,21 @@ public class Enemy : MonoBehaviour {
         acceleration += alignmentVector;
         cohesionVector = Cohesion() * enemySettings.cohesionWeight;
         acceleration += cohesionVector;
+        positionLimitVector = LimitPosition() * enemySettings.positionLimitWeight;
+        acceleration += positionLimitVector;
 
         velocity += acceleration * Time.deltaTime;
-        velocity = LimitVelocity(velocity);
-        position += velocity;
+        float speed = velocity.magnitude;
+        Vector2 dir = velocity / speed;
+        speed = Mathf.Clamp(speed, enemySettings.minSpeed, enemySettings.maxSpeed);
+        velocity = dir * speed;
+
+        position += velocity * Time.deltaTime;
         this.transform.position = new Vector3(position.x, 0, position.y);
-        if (velocity != Vector2.zero) {
+        if (debug)
             Debug.DrawLine(this.transform.position, new Vector3(velocity.x, 0, velocity.y) + this.transform.position, Color.white);
-            this.transform.LookAt((new Vector3(velocity.x, 0, velocity.y) + this.transform.position));
-            this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y -90, 0);
-        }
+        this.transform.LookAt((new Vector3(velocity.x, 0, velocity.y) + this.transform.position));
+        this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y -90, 0);
     }
 
     public Vector2 Seperation() {
@@ -76,7 +86,7 @@ public class Enemy : MonoBehaviour {
 
         foreach (var enemy in nearbyEnemies) {
             Vector2 neighbourToEnemy = position - enemy.position;
-            seperationVelocity += neighbourToEnemy * enemySettings.seperationForce;
+            seperationVelocity += neighbourToEnemy;
         }
 
         seperationVelocity /= nearbyEnemies.Count;
@@ -112,7 +122,8 @@ public class Enemy : MonoBehaviour {
         if (nearbyEnemies.Count > 0) {
             centreOfNeighbours /= nearbyEnemies.Count;
         }
-        //centreOfNeighbours -= position;
+
+        centreOfNeighbours -= position;
 
         if (debug)
             Debug.Log(centreOfNeighbours);
@@ -120,15 +131,23 @@ public class Enemy : MonoBehaviour {
         return centreOfNeighbours.normalized;
     }
 
-    public Vector2 LimitVelocity(Vector2 velocity) {
-        Vector2 returnVelocity = Vector2.zero;
+    public Vector2 LimitPosition() {
+        Vector2 positionLimitVector = Vector2.zero;
 
-        if (Mathf.Abs(velocity.x) > enemySettings.velocityLimit || Mathf.Abs(velocity.y) > enemySettings.velocityLimit) {
-            returnVelocity = (velocity / new Vector2(Mathf.Abs(velocity.x), Mathf.Abs(velocity.y))) * enemySettings.velocityLimit;
-        } else {
-            returnVelocity = velocity;
+        if (position.x < -enemySettings.size.x) {
+            positionLimitVector.x = enemySettings.positionLimitForce;
+        }
+        if (position.x > enemySettings.size.x) {
+            positionLimitVector.x = -enemySettings.positionLimitForce;
         }
 
-        return returnVelocity;
+        if (position.y < -enemySettings.size.y) {
+            positionLimitVector.y = enemySettings.positionLimitForce;
+        }
+        if (position.y > enemySettings.size.y) {
+            positionLimitVector.y = -enemySettings.positionLimitForce;
+        }
+
+        return positionLimitVector;
     }
 }
