@@ -5,9 +5,11 @@ public class EnemySpawner : MonoBehaviour {
     public EnemySettings enemySettings;
     public Enemy enemyPrefab;
     public int numEnemiesToSpawn;
+    public BoxCollider cage;
 
     public void Start() {
         Spawn();
+        cage.size = new Vector3(enemySettings.size.x, 10, enemySettings.size.y);
     }
 
     public void OnDrawGizmos() {

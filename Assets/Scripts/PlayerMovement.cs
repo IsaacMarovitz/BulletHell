@@ -26,6 +26,12 @@ public class PlayerMovement : MonoBehaviour {
         } else {
             cooldownLeft -= Time.deltaTime;
         }
+        if (this.transform.position.x > 200 || this.transform.position.x < -200) {
+            this.transform.position = new Vector3(0, 0, this.transform.position.z);
+        }
+        if (this.transform.position.z > 200 || this.transform.position.z < -200) {
+            this.transform.position = new Vector3(this.transform.position.x, 0, 0);
+        }
     }
 
     void FixedUpdate() {   

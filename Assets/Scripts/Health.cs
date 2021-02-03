@@ -15,6 +15,7 @@ public class Health : MonoBehaviour {
     }
 
     public void Die() {
+        LogMessage.Send(this.gameObject, "Died!");
         Destroy(this.gameObject);
     }
 }

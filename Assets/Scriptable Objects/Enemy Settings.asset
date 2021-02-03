@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5616c997094ce4fbcbd867bc8ef685e0, type: 3}
   m_Name: Enemy Settings
   m_EditorClassIdentifier: 
-  visibilityRadius: 6
+  visibilityRadius: 8
   viewAngle: 150
-  seperationWeight: 13
-  alignmentWeight: 5
-  cohesionWeight: 10
+  seperationWeight: 15
+  alignmentWeight: 14
+  cohesionWeight: 13
   maxSpeed: 30
   minSpeed: 10
-  positionLimitForce: 10
+  positionLimitForce: 20
   positionLimitWeight: 1
   size: {x: 100, y: 100}
