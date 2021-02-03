@@ -11,11 +11,14 @@ public class Enemy : MonoBehaviour {
     public Vector2 seperationVector;
     public Vector2 alignmentVector;
     public Vector2 cohesionVector;
+    public Vector2 targetVector;
     public Vector2 positionLimitVector;
+    public int numPerceivedEnemies;
+    public Transform target;
     public bool debug = false;
 
     void Start() {
-        position = new Vector2(this.transform.position.x, this.transform.position.z);
+        position = Vector3ToVector2(this.transform.position);
         float startSpeed = (enemySettings.minSpeed + enemySettings.maxSpeed) / 2;
         velocity = transform.forward * startSpeed;
     }
@@ -27,43 +30,36 @@ public class Enemy : MonoBehaviour {
                 Gizmos.DrawLine(this.transform.position, enemy.transform.position);
             }
             Gizmos.color = Color.red;
-            Vector3 viewAngleLine1 = new Vector3(this.transform.position.x + enemySettings.visibilityRadius * Mathf.Cos((enemySettings.viewAngle - transform.eulerAngles.y) * Mathf.Deg2Rad), 0, this.transform.position.z + enemySettings.visibilityRadius * Mathf.Sin((enemySettings.viewAngle - transform.eulerAngles.y) * Mathf.Deg2Rad));
-            Vector3 viewAngleLine2 = new Vector3(this.transform.position.x + enemySettings.visibilityRadius * Mathf.Cos((-enemySettings.viewAngle - transform.eulerAngles.y) * Mathf.Deg2Rad), 0, this.transform.position.z + enemySettings.visibilityRadius * Mathf.Sin((-enemySettings.viewAngle - transform.eulerAngles.y)  * Mathf.Deg2Rad));
+            Vector3 viewAngleLine1 = new Vector3(this.transform.position.x + enemySettings.viewDistance * Mathf.Cos((enemySettings.viewAngle - transform.eulerAngles.y) * Mathf.Deg2Rad), 0, this.transform.position.z + enemySettings.viewDistance * Mathf.Sin((enemySettings.viewAngle - transform.eulerAngles.y) * Mathf.Deg2Rad));
+            Vector3 viewAngleLine2 = new Vector3(this.transform.position.x + enemySettings.viewDistance * Mathf.Cos((-enemySettings.viewAngle - transform.eulerAngles.y) * Mathf.Deg2Rad), 0, this.transform.position.z + enemySettings.viewDistance * Mathf.Sin((-enemySettings.viewAngle - transform.eulerAngles.y)  * Mathf.Deg2Rad));
             Gizmos.DrawLine(this.transform.position, viewAngleLine1);
             Gizmos.DrawLine(this.transform.position, viewAngleLine2);
             if (Application.isPlaying) {
                 Gizmos.color = Color.blue;
-                Gizmos.DrawSphere(new Vector3(seperationVector.x, 0, seperationVector.y), 0.1f);
+                Gizmos.DrawSphere(Vector2ToVector3(seperationVector), 0.1f);
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(this.transform.position, new Vector3(alignmentVector.x, 0, alignmentVector.y) + this.transform.position);
+                Gizmos.DrawLine(this.transform.position, Vector2ToVector3(alignmentVector) + this.transform.position);
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawLine(this.transform.position, new Vector3(positionLimitVector.x, 0, positionLimitVector.y) + this.transform.position);
+                Gizmos.DrawLine(this.transform.position, Vector2ToVector3(positionLimitVector) + this.transform.position);
                 Gizmos.color = Color.magenta;
-                Gizmos.DrawSphere(new Vector3(cohesionVector.x, 0, cohesionVector.y), 0.1f);
+                Gizmos.DrawSphere(Vector2ToVector3(cohesionVector), 0.1f);
             }
         }
     }
 
-    void Update() {
-        Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, enemySettings.visibilityRadius);
-        nearbyEnemies = new List<Enemy>();
-        foreach (var collider in hitColliders) {
-            if (Vector3.Angle(-transform.right, this.transform.position - collider.transform.position) < enemySettings.viewAngle) {
-                Enemy enemy = collider.GetComponentInParent<Enemy>();
-                if (!nearbyEnemies.Contains(enemy) && enemy != this && enemy != null) {
-                    nearbyEnemies.Add(collider.GetComponentInParent<Enemy>());
-                }
-            }
-        }
-
+    public void UpdateEnemy() {
         Vector2 acceleration = Vector2.zero;
 
-        seperationVector = Seperation() * enemySettings.seperationWeight;
-        acceleration += seperationVector;
-        alignmentVector = Alignment() * enemySettings.alignmentWeight;
-        acceleration += alignmentVector;
-        cohesionVector = Cohesion() * enemySettings.cohesionWeight;
-        acceleration += cohesionVector;
+        seperationVector /= numPerceivedEnemies;
+        acceleration += seperationVector.normalized * enemySettings.seperationWeight;
+        alignmentVector /= numPerceivedEnemies;
+        acceleration += alignmentVector.normalized * enemySettings.alignmentWeight;
+        cohesionVector /= numPerceivedEnemies;
+        cohesionVector -= position;
+        acceleration += cohesionVector.normalized * enemySettings.cohesionWeight;
+        targetVector = Vector3ToVector2(target.position) - position;
+        acceleration += targetVector.normalized * enemySettings.targetWeight;
+
         positionLimitVector = LimitPosition() * enemySettings.positionLimitWeight;
         acceleration += positionLimitVector;
 
@@ -74,10 +70,10 @@ public class Enemy : MonoBehaviour {
         velocity = dir * speed;
 
         position += velocity * Time.deltaTime;
-        this.transform.position = new Vector3(position.x, 0, position.y);
+        this.transform.position = Vector2ToVector3(position);
         if (debug)
-            Debug.DrawLine(this.transform.position, new Vector3(velocity.x, 0, velocity.y) + this.transform.position, Color.white);
-        this.transform.LookAt((new Vector3(velocity.x, 0, velocity.y) + this.transform.position));
+            Debug.DrawLine(this.transform.position, Vector2ToVector3(velocity) + this.transform.position, Color.white);
+        this.transform.LookAt((Vector2ToVector3(velocity) + this.transform.position));
         this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y -90, 0);
     }
 
@@ -131,6 +127,10 @@ public class Enemy : MonoBehaviour {
         return centreOfNeighbours.normalized;
     }
 
+    public Vector2 Target() {
+        return (Vector3ToVector2(target.position) - position).normalized;
+    }
+
     public Vector2 LimitPosition() {
         Vector2 positionLimitVector = Vector2.zero;
 
@@ -149,5 +149,13 @@ public class Enemy : MonoBehaviour {
         }
 
         return positionLimitVector;
+    }
+
+    public Vector3 Vector2ToVector3(Vector2 vector) {
+        return new Vector3(vector.x, 0, vector.y);
+    }
+
+    public Vector2 Vector3ToVector2(Vector3 vector) {
+        return new Vector2(vector.x, vector.z);
     }
 }

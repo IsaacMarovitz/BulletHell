@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider) {
         if (collider.transform.tag == "Enemy") {
-            collider.transform.gameObject.GetComponentInParent<Health>()?.TakeDamage(damage);
+            collider.transform.gameObject.GetComponentInParent<EnemyHealth>()?.TakeDamage(damage);
             Destroy(this.gameObject);
         } 
     }

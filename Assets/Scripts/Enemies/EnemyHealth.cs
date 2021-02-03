@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Health : MonoBehaviour {
+[RequireComponent(typeof(Enemy))]
+public class EnemyHealth : MonoBehaviour {
 
     [SerializeField]
     int health;
@@ -16,6 +17,7 @@ public class Health : MonoBehaviour {
 
     public void Die() {
         LogMessage.Send(this.gameObject, "Died!");
+        FindObjectOfType<EnemyManager>().RemoveEnemy(GetComponent<Enemy>());
         Destroy(this.gameObject);
     }
 }

@@ -17,6 +17,7 @@ MonoBehaviour:
   seperationWeight: 15
   alignmentWeight: 14
   cohesionWeight: 13
+  targetWeight: 18
   maxSpeed: 30
   minSpeed: 10
   positionLimitForce: 20

@@ -1,0 +1,46 @@
+#pragma kernel CSMain
+static const int threadGroupSize = 1024;
+
+struct Enemy {
+    float2 position;
+    float2 velocity;
+
+    float2 seperationVector;
+    float2 alignmentVector;
+    float2 cohesionVector;
+    uint numPerceivedEnemies;
+};
+
+RWStructuredBuffer<Enemy> enemies;
+uint numEnemies;
+float viewDistance;
+float viewAngle;
+
+[numthreads(threadGroupSize,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID) {
+    for (uint i = 0; i < numEnemies; i++) {
+        if (id.x != i) {
+            Enemy enemy = enemies[i];
+            float2 offset = enemy.position - enemies[id.x].position;
+            float squareDistance = offset.x * offset.x + offset.y * offset.y;
+
+            if (squareDistance < viewDistance * viewDistance) {
+                enemies[id.x].seperationVector += (enemies[id.x].position - enemy.position);
+                enemies[id.x].alignmentVector += enemy.velocity;
+                enemies[id.x].cohesionVector += enemy.position;
+                enemies[id.x].numPerceivedEnemies += 1;
+            }
+        }
+    }
+
+    //enemies[id.x].seperationVector /= numPerceivedEnemies;
+    //enemies[id.x].seperationVector.x = normalize(enemies[id.x].seperationVector.x);
+    //enemies[id.x].seperationVector.y = normalize(enemies[id.x].seperationVector.y);
+    //enemies[id.x].alignmentVector /= numPerceivedEnemies;
+    //enemies[id.x].alignmentVector.x = normalize(enemies[id.x].alignmentVector.x);
+    //enemies[id.x].alignmentVector.y = normalize(enemies[id.x].alignmentVector.y);
+    //enemies[id.x].cohesionVector /= numPerceivedEnemies;
+    //enemies[id.x].cohesionVector -= enemies[id.x].position;
+    //enemies[id.x].cohesionVector.x = normalize(enemies[id.x].cohesionVector.x);
+    //enemies[id.x].cohesionVector.y = normalize(enemies[id.x].cohesionVector.y);
+}
