@@ -73,9 +73,8 @@ public class Enemy : MonoBehaviour {
         velocity = dir * speed;
 
         position += velocity * Time.deltaTime;
-        Vector3 finalPosition = Vector2ToVector3(position);
-        if (float.IsNaN(finalPosition.x) || float.IsNaN(finalPosition.z)) {
-            finalPosition = Vector2.zero;
+        if (float.IsNaN(position.x) || float.IsNaN(position.x)) {
+            position = Vector2.zero;
         }
         this.transform.position = Vector2ToVector3(position);
         if (debug)
