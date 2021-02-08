@@ -15,6 +15,8 @@ public class EnemySettings : ScriptableObject {
     public float cohesionWeight = 13;
     [Header("Target")]
     public float targetWeight = 16;
+    public float targetDistance = 0;
+    public float targetDistanceWeight = 20;
     [Header("Movement")]
     public float maxSpeed = 30;
     public float minSpeed = 10;

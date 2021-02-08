@@ -67,6 +67,7 @@ public class EnemyManager : MonoBehaviour {
             rotation.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
             GameObject instantiatedEnemy = GameObject.Instantiate(enemyPrefab.gameObject, position, rotation);
             instantiatedEnemy.transform.parent = this.transform;
+            instantiatedEnemy.name = $"Enemy {i}";
 
             Enemy enemy = instantiatedEnemy.GetComponent<Enemy>();
             enemy.enemySettings = enemySettings;

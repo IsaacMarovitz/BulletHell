@@ -18,6 +18,8 @@ MonoBehaviour:
   alignmentWeight: 14
   cohesionWeight: 13
   targetWeight: 16
+  targetDistance: 2.2
+  targetDistanceWeight: 20
   maxSpeed: 30
   minSpeed: 10
   positionLimitForce: 20

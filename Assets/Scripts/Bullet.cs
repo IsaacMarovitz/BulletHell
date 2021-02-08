@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour {
     public int damage;
     public Vector3 startingVelocity;
     public Rigidbody rb;
+    public GameUI gameUI;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
@@ -22,7 +23,7 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider) {
         if (collider.transform.tag == "Enemy") {
-            collider.transform.gameObject.GetComponentInParent<EnemyHealth>()?.TakeDamage(damage);
+            collider.transform.gameObject.GetComponentInParent<EnemyHealth>()?.TakeDamage(damage, gameUI);
             Destroy(this.gameObject);
         } 
     }

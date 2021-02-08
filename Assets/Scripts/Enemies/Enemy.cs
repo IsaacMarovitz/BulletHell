@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour {
     public Vector2 alignmentVector;
     public Vector2 cohesionVector;
     public Vector2 targetVector;
+    public Vector2 targetDistanceVector;
     public Vector2 positionLimitVector;
     public int numPerceivedEnemies;
     public Transform target;
@@ -59,6 +60,8 @@ public class Enemy : MonoBehaviour {
         acceleration += cohesionVector.normalized * enemySettings.cohesionWeight;
         targetVector = Vector3ToVector2(target.position) - position;
         acceleration += targetVector.normalized * enemySettings.targetWeight;
+        targetDistanceVector = TargetDistance();
+        acceleration += targetDistanceVector.normalized * enemySettings.targetDistanceWeight;
 
         positionLimitVector = LimitPosition() * enemySettings.positionLimitWeight;
         acceleration += positionLimitVector;
@@ -70,6 +73,10 @@ public class Enemy : MonoBehaviour {
         velocity = dir * speed;
 
         position += velocity * Time.deltaTime;
+        Vector3 finalPosition = Vector2ToVector3(position);
+        if (float.IsNaN(finalPosition.x) || float.IsNaN(finalPosition.z)) {
+            finalPosition = Vector2.zero;
+        }
         this.transform.position = Vector2ToVector3(position);
         if (debug)
             Debug.DrawLine(this.transform.position, Vector2ToVector3(velocity) + this.transform.position, Color.white);
@@ -77,59 +84,15 @@ public class Enemy : MonoBehaviour {
         this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y -90, 0);
     }
 
-    public Vector2 Seperation() {
-        Vector2 seperationVelocity = Vector2.zero;
-
-        foreach (var enemy in nearbyEnemies) {
-            Vector2 neighbourToEnemy = position - enemy.position;
-            seperationVelocity += neighbourToEnemy;
+    public Vector2 TargetDistance() {
+        Vector2 targetDistanceVector = Vector2.zero;
+        float distance = Vector2.Distance(position, Vector3ToVector2(target.transform.position));
+        if (distance < enemySettings.targetDistance) {
+            targetDistanceVector = (position - Vector3ToVector2(target.transform.position)) * enemySettings.targetDistanceWeight;
         }
-
-        seperationVelocity /= nearbyEnemies.Count;
-
-        if (debug)
-            Debug.Log(seperationVelocity.normalized);
-
-        return seperationVelocity.normalized;
+        return targetDistanceVector;
     }
 
-    public Vector2 Alignment() {
-        Vector2 alignmentVelocity = Vector2.zero;
-
-        foreach (var enemy in nearbyEnemies) {
-            alignmentVelocity += enemy.velocity;
-        }
-
-        alignmentVelocity /= nearbyEnemies.Count;
-
-        if (debug)
-            Debug.Log(alignmentVelocity.normalized);
-
-        return alignmentVelocity.normalized;
-    }
-
-    public Vector2 Cohesion() {
-        Vector2 centreOfNeighbours = Vector2.zero;
-        
-        foreach (var enemy in nearbyEnemies) {
-            centreOfNeighbours += enemy.position;
-        }
-
-        if (nearbyEnemies.Count > 0) {
-            centreOfNeighbours /= nearbyEnemies.Count;
-        }
-
-        centreOfNeighbours -= position;
-
-        if (debug)
-            Debug.Log(centreOfNeighbours);
-
-        return centreOfNeighbours.normalized;
-    }
-
-    public Vector2 Target() {
-        return (Vector3ToVector2(target.position) - position).normalized;
-    }
 
     public Vector2 LimitPosition() {
         Vector2 positionLimitVector = Vector2.zero;
