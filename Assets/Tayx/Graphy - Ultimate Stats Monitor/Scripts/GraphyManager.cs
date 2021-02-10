@@ -151,27 +151,6 @@ namespace Tayx.Graphy
         [Range(1, 200)]
         [SerializeField] private    int                     m_ramTextUpdateRate                 = 3;  // 3 updates per sec.
 
-        // Audio -------------------------------------------------------------------------
-
-        [SerializeField] private    ModuleState             m_audioModuleState                  = ModuleState.FULL;
-
-        [SerializeField] private    LookForAudioListener    m_findAudioListenerInCameraIfNull   = LookForAudioListener.ON_SCENE_LOAD;
-
-        [SerializeField] private    AudioListener           m_audioListener                     = null;
-        
-        [SerializeField] private    Color                   m_audioGraphColor                   = Color.white;
-
-        [Range(10, 300)]
-        [SerializeField] private    int                     m_audioGraphResolution              = 81;
-        
-        [Range(1, 200)]
-        [SerializeField] private    int                     m_audioTextUpdateRate               = 3;  // 3 updates per sec.
-        
-        [SerializeField] private    FFTWindow               m_FFTWindow                         = FFTWindow.Blackman;
-
-        [Tooltip("Must be a power of 2 and between 64-8192")]
-        [SerializeField] private    int                     m_spectrumSize                      = 512;
-
         // Advanced ----------------------------------------------------------------------
 
         [SerializeField] private    ModulePosition          m_advancedModulePosition            = ModulePosition.BOTTOM_LEFT;

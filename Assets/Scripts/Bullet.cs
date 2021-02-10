@@ -6,15 +6,10 @@ public class Bullet : MonoBehaviour {
     public float decayTime = 5;
     public int damage;
     public Vector3 startingVelocity;
-    public Rigidbody rb;
     public GameUI gameUI;
 
-    void Start() {
-        rb = GetComponent<Rigidbody>();
-    }
-
     void Update() {
-        rb.velocity = transform.right * bulletSpeed + startingVelocity;
+        this.transform.position += this.transform.right * bulletSpeed + startingVelocity;
         decayTime -= Time.deltaTime;
         if (decayTime <= 0) {
             GameObject.Destroy(this.gameObject);

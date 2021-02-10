@@ -279,7 +279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11458023}
   m_LocalRotation: {x: 0.6427876, y: 0, z: 0, w: 0.7660445}
-  m_LocalPosition: {x: -0.00000023841858, y: 39.84808, z: -1.7364823}
+  m_LocalPosition: {x: -0.00000047683716, y: 39.84808, z: -1.7364823}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 742420297}
@@ -6579,7 +6579,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1589297670}
-  - component: {fileID: 1589297672}
   - component: {fileID: 1589297671}
   m_Layer: 0
   m_Name: Player
@@ -6619,30 +6618,12 @@ MonoBehaviour:
   move: 0
   turnSpeed: 5
   moveSpeed: 15
-  rb: {fileID: 1589297672}
   bulletPrefab: {fileID: 9114090967791437940, guid: 2436eb2c85bae4b2fb3783f702479ea4, type: 3}
   gunCooldown: 0.1
   bulletSpawn: {fileID: 1837085747}
   bulletParent: {fileID: 1021285713}
   gameUI: {fileID: 326699819}
-  cooldownLeft: 0
-  dist: 0
---- !u!54 &1589297672
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1589297669}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 84
-  m_CollisionDetection: 3
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &1598278718
 GameObject:
   m_ObjectHideFlags: 0
@@ -9498,7 +9479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5144975228331266109, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -2.0001225
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 5144975228331266109, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_AnchoredPosition.y
