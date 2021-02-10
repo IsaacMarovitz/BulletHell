@@ -32,15 +32,4 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
             }
         }
     }
-
-    //enemies[id.x].seperationVector /= numPerceivedEnemies;
-    //enemies[id.x].seperationVector.x = normalize(enemies[id.x].seperationVector.x);
-    //enemies[id.x].seperationVector.y = normalize(enemies[id.x].seperationVector.y);
-    //enemies[id.x].alignmentVector /= numPerceivedEnemies;
-    //enemies[id.x].alignmentVector.x = normalize(enemies[id.x].alignmentVector.x);
-    //enemies[id.x].alignmentVector.y = normalize(enemies[id.x].alignmentVector.y);
-    //enemies[id.x].cohesionVector /= numPerceivedEnemies;
-    //enemies[id.x].cohesionVector -= enemies[id.x].position;
-    //enemies[id.x].cohesionVector.x = normalize(enemies[id.x].cohesionVector.x);
-    //enemies[id.x].cohesionVector.y = normalize(enemies[id.x].cohesionVector.y);
 }

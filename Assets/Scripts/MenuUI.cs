@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using TMPro;
+using System.Collections;
 
 public class MenuUI : MonoBehaviour {
     

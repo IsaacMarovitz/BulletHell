@@ -12,6 +12,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Tayx.Graphy.Utils.NumString;
+using TMPro;
 
 namespace Tayx.Graphy.Fps
 {
@@ -26,12 +27,12 @@ namespace Tayx.Graphy.Fps
 
         #region Variables -> Serialized Private
 
-        [SerializeField] private    Text            m_fpsText           = null;
-        [SerializeField] private    Text            m_msText            = null;
+        [SerializeField] private    TMP_Text        m_fpsText           = null;
+        [SerializeField] private    TMP_Text        m_msText            = null;
 
-        [SerializeField] private    Text            m_avgFpsText        = null;
-        [SerializeField] private    Text            m_minFpsText        = null;
-        [SerializeField] private    Text            m_maxFpsText        = null;
+        [SerializeField] private    TMP_Text        m_avgFpsText        = null;
+        [SerializeField] private    TMP_Text        m_minFpsText        = null;
+        [SerializeField] private    TMP_Text        m_maxFpsText        = null;
 
         #endregion
 
@@ -130,7 +131,7 @@ namespace Tayx.Graphy.Fps
         /// <param name="fps">
         /// Numeric fps value
         /// </param>
-        private void SetFpsRelatedTextColor(Text text, float fps)
+        private void SetFpsRelatedTextColor(TMP_Text text, float fps)
         {
             if (fps > m_graphyManager.GoodFPSThreshold)
             {
