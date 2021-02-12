@@ -1,13 +1,11 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
-
+public class EnemyBullet : MonoBehaviour {
     public float bulletSpeed = 15;
     public float decayTime = 5;
     public int damage = 5;
     public float startingSpeed;
-    public GameUI gameUI;
-
+    
     void Update() {
         this.transform.position += this.transform.right * (bulletSpeed + startingSpeed) * Time.deltaTime;
         decayTime -= Time.deltaTime;
@@ -17,9 +15,10 @@ public class Bullet : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider collider) {
-        if (collider.transform.tag == "Enemy") {
-            collider.transform.gameObject.GetComponentInParent<EnemyHealth>()?.TakeDamage(damage, gameUI);
+        if (collider.transform.tag == "Player") {
+            Debug.Log("Player was hit!");
+            //collider.transform.gameObject.GetComponentInParent<PlayerHealth>()?.TakeDamage(damage);
             Destroy(this.gameObject);
-        } 
+        }
     }
 }

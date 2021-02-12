@@ -21,9 +21,9 @@ public class PlayerMovement : MonoBehaviour {
         }
         if (cooldownLeft <= 0 && Input.GetMouseButton(0)) {
             cooldownLeft = gunCooldown;
-            GameObject instantiatedeBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
-            instantiatedeBullet.transform.parent = bulletParent;
-            Bullet bullet = instantiatedeBullet.GetComponent<Bullet>();
+            GameObject instantiatedBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
+            instantiatedBullet.transform.parent = bulletParent;
+            Bullet bullet = instantiatedBullet.GetComponent<Bullet>();
             bullet.startingSpeed = speed;
             bullet.gameUI = gameUI;
         } else {

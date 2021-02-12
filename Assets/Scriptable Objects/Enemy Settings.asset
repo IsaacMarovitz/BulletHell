@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewDistance: 8
   viewAngle: 150
+  shootDistance: 45
+  shootAngle: 30
   seperationWeight: 25
   alignmentWeight: 14
   cohesionWeight: 13
-  targetWeight: 16
+  targetWeight: 0
   targetDistance: 2.2
   targetDistanceWeight: 20
   maxSpeed: 30

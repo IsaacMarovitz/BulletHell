@@ -18,11 +18,50 @@ public class Enemy : MonoBehaviour {
     public Transform target;
     public bool debug = false;
     public EnemyManager enemyManager;
+    public GameObject bulletPrefab;
+    public GameObject player;
+    public Vector3 positionDifference;
+    public float angle;
+    public bool shoot = false;
+    public float gunCooldown = 0.1f;
+    public Transform bulletSpawn;
+    public Transform bulletParent;
+
+    float cooldownLeft;
+    Vector3 lastPosition;
+    float speed;
 
     void Start() {
         position = Vector3ToVector2(this.transform.position);
         float startSpeed = (enemySettings.minSpeed + enemySettings.maxSpeed) / 2;
         velocity = transform.forward * startSpeed;
+    }
+
+    void Update() {
+        positionDifference = player.transform.position - this.transform.position;
+        angle = (Mathf.Atan2(positionDifference.z, positionDifference.x) * Mathf.Rad2Deg) + this.transform.rotation.eulerAngles.y;
+        if (Mathf.Abs(angle) < enemySettings.shootAngle || Mathf.Abs(360-angle) < enemySettings.shootAngle) {
+            if (positionDifference.magnitude < enemySettings.shootDistance) {
+                shoot = true;
+            } else {
+                shoot = false;
+            }
+        } else {
+            shoot = false;
+        }
+
+        if (shoot && cooldownLeft <= 0) {
+            cooldownLeft = gunCooldown;
+            GameObject instantiatedBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
+            instantiatedBullet.transform.parent = bulletParent;
+            EnemyBullet bullet = instantiatedBullet.GetComponent<EnemyBullet>();
+            bullet.startingSpeed = speed;
+        } else {
+            cooldownLeft -= Time.deltaTime;
+        }
+
+        speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
+        lastPosition = this.transform.position;
     }
 
     void OnDrawGizmos() {
@@ -52,12 +91,14 @@ public class Enemy : MonoBehaviour {
     public void UpdateEnemy() {
         Vector2 acceleration = Vector2.zero;
 
-        seperationVector /= numPerceivedEnemies;
-        acceleration += seperationVector.normalized * enemySettings.seperationWeight;
-        alignmentVector /= numPerceivedEnemies;
-        acceleration += alignmentVector.normalized * enemySettings.alignmentWeight;
-        cohesionVector /= numPerceivedEnemies;
-        cohesionVector -= position;
+        if (numPerceivedEnemies > 0) {
+            seperationVector /= numPerceivedEnemies;
+            acceleration += seperationVector.normalized * enemySettings.seperationWeight;
+            alignmentVector /= numPerceivedEnemies;
+            acceleration += alignmentVector.normalized * enemySettings.alignmentWeight;
+            cohesionVector /= numPerceivedEnemies;
+            cohesionVector -= position;
+        }
         acceleration += cohesionVector.normalized * enemySettings.cohesionWeight;
         targetVector = Vector3ToVector2(target.position) - position;
         acceleration += targetVector.normalized * enemySettings.targetWeight;

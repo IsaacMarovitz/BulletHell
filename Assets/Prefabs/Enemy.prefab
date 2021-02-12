@@ -203,8 +203,21 @@ MonoBehaviour:
   seperationVector: {x: 0, y: 0}
   alignmentVector: {x: 0, y: 0}
   cohesionVector: {x: 0, y: 0}
+  targetVector: {x: 0, y: 0}
+  targetDistanceVector: {x: 0, y: 0}
   positionLimitVector: {x: 0, y: 0}
+  numPerceivedEnemies: 0
+  target: {fileID: 0}
   debug: 0
+  enemyManager: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  player: {fileID: 0}
+  positionDifference: {x: 0, y: 0, z: 0}
+  angle: 0
+  shoot: 0
+  gunCooldown: 0.1
+  bulletSpawn: {fileID: 1025875153888317389}
+  bulletParent: {fileID: 0}
 --- !u!1 &1025875153888317388
 GameObject:
   m_ObjectHideFlags: 0

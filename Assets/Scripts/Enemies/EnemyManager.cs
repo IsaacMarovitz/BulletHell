@@ -11,6 +11,9 @@ public class EnemyManager : MonoBehaviour {
     public int numEnemiesToSpawn;
     public Transform target;
     public BoxCollider cage;
+    public GameObject player;
+    public GameObject bulletPrefab;
+    public Transform bulletParent;
     
     List<Enemy> enemies = new List<Enemy>();
 
@@ -73,6 +76,9 @@ public class EnemyManager : MonoBehaviour {
             enemy.enemySettings = enemySettings;
             enemy.target = target;
             enemy.enemyManager = this;
+            enemy.player = player;
+            enemy.bulletPrefab = bulletPrefab;
+            enemy.bulletParent = bulletParent;
             enemies.Add(enemy);
         }
     }

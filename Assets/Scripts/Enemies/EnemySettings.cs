@@ -7,6 +7,10 @@ public class EnemySettings : ScriptableObject {
     public float viewDistance = 8;
     [Range(0, 180)]
     public float viewAngle = 150;
+    [Range(0, 50)]
+    public float shootDistance = 40;
+    [Range(0, 180)]
+    public float shootAngle = 20;
     [Header("Seperation")]
     public float seperationWeight = 25;
     [Header("Alignment")]
