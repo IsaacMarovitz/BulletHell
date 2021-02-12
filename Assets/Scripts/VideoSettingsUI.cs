@@ -10,7 +10,7 @@ public class VideoSettingsUI : MonoBehaviour {
     public Toggle vsyncToggle;
     public Toggle fullscreenToggle;
     public Animator videoSettingsAnimator;
-    public Animator previousMenuAnimator;
+    public MenuUI menuUI;
     public Button backButton;
 
     Resolution[] resolutions;
@@ -79,6 +79,7 @@ public class VideoSettingsUI : MonoBehaviour {
 
     public void Back() {
         videoSettingsAnimator.Play("Fade & Slide Out");
-        previousMenuAnimator.Play("Fade & Slide In");
+        menuUI.animator.Play("Fade & Slide In");
+        menuUI.currentMenu = CurrentMenu.Main;
     }
 }

@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour {
 
     float cooldownLeft;
     Vector3 lastPosition;
-    public Vector3 velocity;
+    float speed;
 
     void Update() {
         if (!move) {
@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour {
             GameObject instantiatedeBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
             instantiatedeBullet.transform.parent = bulletParent;
             Bullet bullet = instantiatedeBullet.GetComponent<Bullet>();
-            bullet.startingVelocity = velocity;
+            bullet.startingSpeed = speed;
             bullet.gameUI = gameUI;
         } else {
             cooldownLeft -= Time.deltaTime;
@@ -42,10 +42,10 @@ public class PlayerMovement : MonoBehaviour {
         mousePosition.x = mousePosition.x - objectPosition.x;
         mousePosition.y = mousePosition.y - objectPosition.y;
         float dist = Mathf.Clamp01((Mathf.Sqrt((mousePosition.x * mousePosition.x) + (mousePosition.y * mousePosition.y)) - 20) / 100);
-        float angle = -Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, angle, 0)), Time.deltaTime * turnSpeed * dist);
+        float angle = -Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg + 90;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, angle, 0)), Time.deltaTime * turnSpeed * dist);
         this.transform.position += this.transform.right * moveSpeed * dist * Time.deltaTime;
-        velocity = (this.transform.position - lastPosition) / Time.deltaTime;
+        speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
         lastPosition = this.transform.position;
     }
 }

@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour {
     public int numPerceivedEnemies;
     public Transform target;
     public bool debug = false;
+    public EnemyManager enemyManager;
 
     void Start() {
         position = Vector3ToVector2(this.transform.position);

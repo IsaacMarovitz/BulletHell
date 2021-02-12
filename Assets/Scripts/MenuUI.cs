@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using TMPro;
-using System.Collections;
 
 public class MenuUI : MonoBehaviour {
     
@@ -19,6 +18,8 @@ public class MenuUI : MonoBehaviour {
     public GameObject gameUI;
     public Animator videoSettingsAnimator;
     public Animator audioSettingsAnimator;
+    [HideInInspector]
+    public CurrentMenu currentMenu;
 
     float targetWeight;
     bool gameStarted = false;
@@ -34,6 +35,7 @@ public class MenuUI : MonoBehaviour {
         videoSettingsAnimator.Play("Closed");
         audioSettingsAnimator.Play("Closed");
         menuTitle.text = "BULLET HELL";
+        currentMenu = CurrentMenu.Main;
     }
 
     void Update() {
@@ -41,7 +43,13 @@ public class MenuUI : MonoBehaviour {
             if (gamePaused) {
                 gamePaused = false;
                 uiCamera.Priority = 0;
-                animator.Play("Fade Out");
+                if (currentMenu == CurrentMenu.Main) {
+                    animator.Play("Fade Out");
+                } else if (currentMenu == CurrentMenu.Video) {
+                    videoSettingsAnimator.Play("Fade Out");
+                } else if (currentMenu == CurrentMenu.Audio) {
+                    audioSettingsAnimator.Play("Fade Out");
+                }
                 gameUI.SetActive(true);
                 playerMovement.move = true;
                 Time.timeScale = 1f;
@@ -79,14 +87,18 @@ public class MenuUI : MonoBehaviour {
     public void VideoSettings() {
         animator.Play("Fade & Slide Out");
         videoSettingsAnimator.Play("Fade & Slide In");
+        currentMenu = CurrentMenu.Video;
     }
 
     public void AudioSettings() {
         animator.Play("Fade & Slide Out");
         audioSettingsAnimator.Play("Fade & Slide In");
+        currentMenu = CurrentMenu.Audio;
     }
 
     public void Quit() {
         Application.Quit();
     }
 }
+
+public enum CurrentMenu { Main, Video, Audio };

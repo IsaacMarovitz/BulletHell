@@ -72,6 +72,7 @@ public class EnemyManager : MonoBehaviour {
             Enemy enemy = instantiatedEnemy.GetComponent<Enemy>();
             enemy.enemySettings = enemySettings;
             enemy.target = target;
+            enemy.enemyManager = this;
             enemies.Add(enemy);
         }
     }

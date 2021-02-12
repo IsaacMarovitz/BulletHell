@@ -99,7 +99,7 @@ MonoBehaviour:
   bulletSpeed: 15
   decayTime: 5
   damage: 15
-  startingVelocity: {x: 0, y: 0, z: 0}
+  startingSpeed: 0
   gameUI: {fileID: 0}
 --- !u!65 &8839535712831202375
 BoxCollider:
