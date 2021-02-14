@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -12,6 +13,8 @@ public class PlayerMovement : MonoBehaviour {
     public GameUI gameUI;
     public AudioSource audioSource;
     public AudioClip gunSFX;
+    public GameObject rotationIndicatorParent;
+    public Image rotationIndicator;
 
     float cooldownLeft;
     Vector3 lastPosition;
@@ -45,6 +48,9 @@ public class PlayerMovement : MonoBehaviour {
         mousePosition.y = mousePosition.y - objectPosition.y;
         float dist = Mathf.Clamp01((Mathf.Sqrt((mousePosition.x * mousePosition.x) + (mousePosition.y * mousePosition.y)) - 20) / 100);
         float angle = -Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg + 90;
+        rotationIndicatorParent.transform.rotation = Quaternion.Euler(-90, -90, angle + 90 + this.transform.rotation.eulerAngles.y);
+        rotationIndicator.rectTransform.localPosition = new Vector3(2 + 3 * dist, 0, 0);
+        rotationIndicator.color = new Color(1, 1, 1, 1 * dist);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, angle, 0)), Time.deltaTime * turnSpeed * dist);
         this.transform.position += this.transform.right * moveSpeed * dist * Time.deltaTime;
         speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;

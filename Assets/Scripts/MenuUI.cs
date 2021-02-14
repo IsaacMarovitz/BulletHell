@@ -59,6 +59,7 @@ public class MenuUI : MonoBehaviour {
                 gameUI.SetActive(true);
                 playerMovement.move = true;
                 musicManager.Resume();
+                Cursor.visible = false;
                 StartCoroutine(FadeTime(1, pauseFadeDuration));
             } else {
                 gamePaused = true;
@@ -67,6 +68,7 @@ public class MenuUI : MonoBehaviour {
                 gameUI.SetActive(false);
                 playerMovement.move = false;
                 musicManager.Pause();
+                Cursor.visible = true;
                 StartCoroutine(FadeTime(0, pauseFadeDuration));
             }
         }
@@ -80,6 +82,7 @@ public class MenuUI : MonoBehaviour {
             gameUI.SetActive(true);
             playerMovement.move = true;
             musicManager.Resume();
+            Cursor.visible = false;
             StartCoroutine(FadeTime(1, pauseFadeDuration));
         } else {
             uiCamera.Priority = 0;
@@ -90,6 +93,7 @@ public class MenuUI : MonoBehaviour {
             enemySettings.shootingEnabled = true;
             musicManager.ChangeAudioState(musicManager.levelOneMusic);
             gameStarted = true;
+            Cursor.visible = false;
             menuTitle.text = "PAUSED";
             newGameButtonText.text = "RESUME";
         }
