@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpeed: 15
   decayTime: 5
-  damage: 15
+  damage: 50
   startingSpeed: 0
   gameUI: {fileID: 0}
 --- !u!65 &8839535712831202375

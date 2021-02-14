@@ -10,15 +10,16 @@ public class PlayerMovement : MonoBehaviour {
     public Transform bulletSpawn;
     public Transform bulletParent;
     public GameUI gameUI;
+    public AudioSource audioSource;
+    public AudioClip gunSFX;
 
     float cooldownLeft;
     Vector3 lastPosition;
     float speed;
 
     void Update() {
-        if (!move) {
+        if (!move) 
             return;
-        }
         if (cooldownLeft <= 0 && Input.GetMouseButton(0)) {
             cooldownLeft = gunCooldown;
             GameObject instantiatedBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour {
             Bullet bullet = instantiatedBullet.GetComponent<Bullet>();
             bullet.startingSpeed = speed;
             bullet.gameUI = gameUI;
+            audioSource.PlayOneShot(gunSFX);
         } else {
             cooldownLeft -= Time.deltaTime;
         }

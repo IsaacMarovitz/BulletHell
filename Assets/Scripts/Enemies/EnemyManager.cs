@@ -5,11 +5,14 @@ public class EnemyManager : MonoBehaviour {
 
     const int threadGroupSize = 64;
 
-    public EnemySettings enemySettings;
-    public Enemy enemyPrefab;
+    public EnemySettings droneEnemySettings;
+    public Enemy droneEnemyPrefab;
+    public EnemySettings cannonEnemySettings;
+    public Enemy cannonEnemyPrefab;
+    public EnemySettings fighterEnemySettings;
+    public Enemy fighterEnemyPrefab;
     public ComputeShader compute;
     public int numEnemiesToSpawn;
-    public Transform target;
     public BoxCollider cage;
     public GameObject player;
     public GameObject bulletPrefab;
@@ -19,7 +22,7 @@ public class EnemyManager : MonoBehaviour {
 
     public void Start() {
         Spawn();
-        cage.size = new Vector3(enemySettings.size.x, 10, enemySettings.size.y);
+        cage.size = new Vector3(droneEnemySettings.size.x, 10, droneEnemySettings.size.y);
     }
 
     public void Update() {
@@ -37,8 +40,8 @@ public class EnemyManager : MonoBehaviour {
 
             compute.SetBuffer(0, "enemies", enemyBuffer);
             compute.SetInt("numEnemies", numEnemies);
-            compute.SetFloat("viewDistance", enemySettings.viewDistance);
-            compute.SetFloat("viewAngle", enemySettings.viewAngle);
+            compute.SetFloat("viewDistance", droneEnemySettings.viewDistance);
+            compute.SetFloat("viewAngle", droneEnemySettings.viewAngle);
 
             int threadGroups = Mathf.CeilToInt(numEnemies / (float)threadGroupSize);
             compute.Dispatch(0, threadGroups, 1, 1);
@@ -60,21 +63,22 @@ public class EnemyManager : MonoBehaviour {
 
     public void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(this.transform.position, new Vector3(enemySettings.size.x * 2, 10, enemySettings.size.y * 2));
+        if (droneEnemySettings != null) {
+            Gizmos.DrawWireCube(this.transform.position, new Vector3(droneEnemySettings.size.x * 2, 10, droneEnemySettings.size.y * 2));
+        }
     }
 
     public void Spawn() {
         for (int i = 0; i < numEnemiesToSpawn; i++) {
-            Vector3 position = new Vector3(Random.Range(-enemySettings.size.x, enemySettings.size.x), 0, Random.Range(-enemySettings.size.y, enemySettings.size.y));
+            Vector3 position = new Vector3(Random.Range(-droneEnemySettings.size.x, droneEnemySettings.size.x), 0, Random.Range(-droneEnemySettings.size.y, droneEnemySettings.size.y));
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
-            GameObject instantiatedEnemy = GameObject.Instantiate(enemyPrefab.gameObject, position, rotation);
+            GameObject instantiatedEnemy = GameObject.Instantiate(droneEnemyPrefab.gameObject, position, rotation);
             instantiatedEnemy.transform.parent = this.transform;
             instantiatedEnemy.name = $"Enemy {i}";
 
             Enemy enemy = instantiatedEnemy.GetComponent<Enemy>();
-            enemy.enemySettings = enemySettings;
-            enemy.target = target;
+            enemy.enemySettings = droneEnemySettings;
             enemy.enemyManager = this;
             enemy.player = player;
             enemy.bulletPrefab = bulletPrefab;

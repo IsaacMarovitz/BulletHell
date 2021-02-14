@@ -2,10 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using TMPro;
+using System.Collections;
 
 public class MenuUI : MonoBehaviour {
     
     public EnemySettings enemySettings;
+    public MusicManager musicManager;
     public CinemachineVirtualCamera uiCamera;
     public TMP_Text menuTitle;
     public TMP_Text newGameButtonText;
@@ -20,6 +22,8 @@ public class MenuUI : MonoBehaviour {
     public Animator audioSettingsAnimator;
     [HideInInspector]
     public CurrentMenu currentMenu;
+    public int pauseFadeDuration;
+    public AnimationCurve timeCurve;
 
     float targetWeight;
     bool gameStarted = false;
@@ -32,6 +36,7 @@ public class MenuUI : MonoBehaviour {
         quitButton.onClick.AddListener(Quit);
         targetWeight = enemySettings.targetWeight;
         enemySettings.targetWeight = 0;
+        enemySettings.shootingEnabled = false;
         videoSettingsAnimator.Play("Closed");
         audioSettingsAnimator.Play("Closed");
         menuTitle.text = "BULLET HELL";
@@ -50,16 +55,19 @@ public class MenuUI : MonoBehaviour {
                 } else if (currentMenu == CurrentMenu.Audio) {
                     audioSettingsAnimator.Play("Fade Out");
                 }
+                currentMenu = CurrentMenu.Main;
                 gameUI.SetActive(true);
                 playerMovement.move = true;
-                Time.timeScale = 1f;
+                musicManager.Resume();
+                StartCoroutine(FadeTime(1, pauseFadeDuration));
             } else {
                 gamePaused = true;
                 uiCamera.Priority = 20;
                 animator.Play("Fade In");
                 gameUI.SetActive(false);
                 playerMovement.move = false;
-                Time.timeScale = 0f;
+                musicManager.Pause();
+                StartCoroutine(FadeTime(0, pauseFadeDuration));
             }
         }
     }
@@ -71,13 +79,16 @@ public class MenuUI : MonoBehaviour {
             animator.Play("Fade Out");
             gameUI.SetActive(true);
             playerMovement.move = true;
-            Time.timeScale = 1f;
+            musicManager.Resume();
+            StartCoroutine(FadeTime(1, pauseFadeDuration));
         } else {
             uiCamera.Priority = 0;
             animator.Play("Fade Out");
-            playerMovement.move = true;
             enemySettings.targetWeight = targetWeight;
             gameUI.SetActive(true);
+            playerMovement.move = true;
+            enemySettings.shootingEnabled = true;
+            musicManager.ChangeAudioState(musicManager.levelOneMusic);
             gameStarted = true;
             menuTitle.text = "PAUSED";
             newGameButtonText.text = "RESUME";
@@ -98,6 +109,18 @@ public class MenuUI : MonoBehaviour {
 
     public void Quit() {
         Application.Quit();
+    }
+
+    public IEnumerator FadeTime(float end, float duration) {
+        float currentTime = 0;
+        float start = Time.timeScale;
+        while (currentTime < duration) {
+            currentTime += Time.unscaledDeltaTime;
+            float pointAlongCurve = Mathf.Lerp(start, end, currentTime / duration);
+            Time.timeScale = timeCurve.Evaluate(pointAlongCurve);
+            yield return null;
+        }
+        yield break;
     }
 }
 

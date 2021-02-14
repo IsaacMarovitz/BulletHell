@@ -7,6 +7,8 @@ public class EnemySettings : ScriptableObject {
     public float viewDistance = 8;
     [Range(0, 180)]
     public float viewAngle = 150;
+    [Header("Shooting")]
+    public bool shootingEnabled = false;
     [Range(0, 50)]
     public float shootDistance = 40;
     [Range(0, 180)]

@@ -15,7 +15,6 @@ public class Enemy : MonoBehaviour {
     public Vector2 targetDistanceVector;
     public Vector2 positionLimitVector;
     public int numPerceivedEnemies;
-    public Transform target;
     public bool debug = false;
     public EnemyManager enemyManager;
     public GameObject bulletPrefab;
@@ -26,6 +25,8 @@ public class Enemy : MonoBehaviour {
     public float gunCooldown = 0.1f;
     public Transform bulletSpawn;
     public Transform bulletParent;
+    public AudioSource audioSource;
+    public AudioClip gunSFX;
 
     float cooldownLeft;
     Vector3 lastPosition;
@@ -50,12 +51,13 @@ public class Enemy : MonoBehaviour {
             shoot = false;
         }
 
-        if (shoot && cooldownLeft <= 0) {
+        if (shoot && cooldownLeft <= 0 && enemySettings.shootingEnabled) {
             cooldownLeft = gunCooldown;
             GameObject instantiatedBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
             instantiatedBullet.transform.parent = bulletParent;
             EnemyBullet bullet = instantiatedBullet.GetComponent<EnemyBullet>();
             bullet.startingSpeed = speed;
+            audioSource.PlayOneShot(gunSFX);
         } else {
             cooldownLeft -= Time.deltaTime;
         }
@@ -93,20 +95,20 @@ public class Enemy : MonoBehaviour {
 
         if (numPerceivedEnemies > 0) {
             seperationVector /= numPerceivedEnemies;
-            acceleration += seperationVector.normalized * enemySettings.seperationWeight;
+            acceleration += CheckNullAndAdd(seperationVector.normalized, enemySettings.seperationWeight);
             alignmentVector /= numPerceivedEnemies;
-            acceleration += alignmentVector.normalized * enemySettings.alignmentWeight;
+            acceleration += CheckNullAndAdd(alignmentVector.normalized, enemySettings.alignmentWeight);
             cohesionVector /= numPerceivedEnemies;
             cohesionVector -= position;
+            acceleration += CheckNullAndAdd(cohesionVector.normalized, enemySettings.cohesionWeight);
         }
-        acceleration += cohesionVector.normalized * enemySettings.cohesionWeight;
-        targetVector = Vector3ToVector2(target.position) - position;
-        acceleration += targetVector.normalized * enemySettings.targetWeight;
+        targetVector = Vector3ToVector2(player.transform.position) - position;
+        acceleration += CheckNullAndAdd(targetVector.normalized, enemySettings.targetWeight);
         targetDistanceVector = TargetDistance();
-        acceleration += targetDistanceVector.normalized * enemySettings.targetDistanceWeight;
+        acceleration += CheckNullAndAdd(targetDistanceVector.normalized, enemySettings.targetDistanceWeight);
 
-        positionLimitVector = LimitPosition() * enemySettings.positionLimitWeight;
-        acceleration += positionLimitVector;
+        positionLimitVector = LimitPosition();
+        acceleration += CheckNullAndAdd(positionLimitVector, enemySettings.positionLimitWeight);
 
         velocity += acceleration * Time.deltaTime;
         float speed = velocity.magnitude;
@@ -114,10 +116,7 @@ public class Enemy : MonoBehaviour {
         speed = Mathf.Clamp(speed, enemySettings.minSpeed, enemySettings.maxSpeed);
         velocity = dir * speed;
 
-        position += velocity * Time.deltaTime;
-        if (float.IsNaN(position.x) || float.IsNaN(position.x)) {
-            position = Vector2.zero;
-        }
+        position += CheckNullAndAdd(velocity, Time.deltaTime);
         this.transform.position = Vector2ToVector3(position);
         if (debug)
             Debug.DrawLine(this.transform.position, Vector2ToVector3(velocity) + this.transform.position, Color.white);
@@ -127,9 +126,9 @@ public class Enemy : MonoBehaviour {
 
     public Vector2 TargetDistance() {
         Vector2 targetDistanceVector = Vector2.zero;
-        float distance = Vector2.Distance(position, Vector3ToVector2(target.transform.position));
+        float distance = Vector2.Distance(position, Vector3ToVector2(player.transform.position));
         if (distance < enemySettings.targetDistance) {
-            targetDistanceVector = (position - Vector3ToVector2(target.transform.position)) * enemySettings.targetDistanceWeight;
+            targetDistanceVector = (position - Vector3ToVector2(player.transform.position)) * enemySettings.targetDistanceWeight;
         }
         return targetDistanceVector;
     }
@@ -161,5 +160,13 @@ public class Enemy : MonoBehaviour {
 
     public Vector2 Vector3ToVector2(Vector3 vector) {
         return new Vector2(vector.x, vector.z);
+    }
+
+    public Vector2 CheckNullAndAdd(Vector2 vector, float weight) {
+        if (float.IsNaN(vector.x) || float.IsNaN(vector.x)) {
+            return Vector2.zero;
+        } else {
+            return vector * weight;
+        }
     }
 }

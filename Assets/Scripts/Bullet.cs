@@ -9,7 +9,12 @@ public class Bullet : MonoBehaviour {
     public GameUI gameUI;
 
     void Update() {
-        this.transform.position += this.transform.right * (bulletSpeed + startingSpeed) * Time.deltaTime;
+        Vector3 posOffset = this.transform.right * (bulletSpeed + startingSpeed) * Time.deltaTime;
+        if (float.IsNaN(posOffset.x) || float.IsNaN(posOffset.y) || float.IsNaN(posOffset.z)) {
+            GameObject.Destroy(this.gameObject);
+        } else {
+            this.transform.position += posOffset;
+        }
         decayTime -= Time.deltaTime;
         if (decayTime <= 0) {
             GameObject.Destroy(this.gameObject);
