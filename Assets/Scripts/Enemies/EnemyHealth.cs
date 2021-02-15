@@ -26,7 +26,6 @@ public class EnemyHealth : MonoBehaviour {
 
     public void Die() {
         isDead = true;
-        Debug.Log("Enemy Died!");
         //LogMessage.Send(this.gameObject, "Died!");
         enemyManager.RemoveEnemy(enemy);
         Destroy(this.gameObject);

@@ -18,11 +18,15 @@ public class GameUI : MonoBehaviour {
         if (newScoreTextAnimator.GetCurrentAnimatorClipInfo(0).Length > 0) {
             newScoreTextScore += scores[(int)enemyType];
             newScoreText.text = $"KILLED {names[(int)enemyType]} +{newScoreTextScore}";
-            newScoreTextAnimator.Play("Bounce Text");
+            if (newScoreTextAnimator.gameObject.activeInHierarchy) {
+                newScoreTextAnimator.Play("Bounce Text");
+            }
         } else {
             newScoreTextScore = scores[(int)enemyType];
             newScoreText.text = $"KILLED {names[(int)enemyType]} +{newScoreTextScore}";
-            newScoreTextAnimator.Play("Bounce In");
+            if (newScoreTextAnimator.gameObject.activeInHierarchy) {
+                newScoreTextAnimator.Play("Bounce In");
+            }
         }
     }
 

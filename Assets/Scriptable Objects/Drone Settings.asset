@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewDistance: 8
   viewAngle: 150
-  shootingEnabled: 0
+  shootingEnabled: 1
   shootDistance: 45
   shootAngle: 30
   seperationWeight: 25
   alignmentWeight: 14
   cohesionWeight: 13
-  targetWeight: 0
+  targetWeight: 16
   targetDistance: 2.2
-  targetDistanceWeight: 20
+  targetDistanceWeight: 0
   maxSpeed: 30
   minSpeed: 10
   positionLimitForce: 20

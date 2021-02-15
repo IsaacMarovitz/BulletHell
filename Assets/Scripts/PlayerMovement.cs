@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour {
     public bool move = false;
     public float turnSpeed = 5;
     public float moveSpeed = 10;
+    [Range(0, 180)]
+    public float maxTurnAngle = 150;
     public GameObject bulletPrefab;
     public float gunCooldown = 0.1f;
     public Transform bulletSpawn;
@@ -34,10 +36,10 @@ public class PlayerMovement : MonoBehaviour {
         } else {
             cooldownLeft -= Time.deltaTime;
         }
-        if (this.transform.position.x > 200 || this.transform.position.x < -200) {
+        if (this.transform.position.x > 400 || this.transform.position.x < -400) {
             this.transform.position = new Vector3(0, 0, this.transform.position.z);
         }
-        if (this.transform.position.z > 200 || this.transform.position.z < -200) {
+        if (this.transform.position.z > 400 || this.transform.position.z < -400) {
             this.transform.position = new Vector3(this.transform.position.x, 0, 0);
         }
 
@@ -48,6 +50,14 @@ public class PlayerMovement : MonoBehaviour {
         mousePosition.y = mousePosition.y - objectPosition.y;
         float dist = Mathf.Clamp01((Mathf.Sqrt((mousePosition.x * mousePosition.x) + (mousePosition.y * mousePosition.y)) - 20) / 100);
         float angle = -Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg + 90;
+        if (angle > 180) {
+            angle = angle - 360;
+        }
+        if (angle > maxTurnAngle) {
+            angle = maxTurnAngle;
+        } else if (angle < -maxTurnAngle) {
+            angle = -maxTurnAngle;
+        }
         rotationIndicatorParent.transform.rotation = Quaternion.Euler(-90, -90, angle + 90 + this.transform.rotation.eulerAngles.y);
         rotationIndicator.rectTransform.localPosition = new Vector3(2 + 3 * dist, 0, 0);
         rotationIndicator.color = new Color(1, 1, 1, 1 * dist);

@@ -18,9 +18,19 @@ public class EnemyManager : MonoBehaviour {
     public GameObject bulletPrefab;
     public Transform bulletParent;
     
+    bool useComputeShader = true;
+    
     List<Enemy> enemies = new List<Enemy>();
 
     public void Start() {
+        #if !UNITY_EDITOR
+        if (SystemInfo.graphicsDeviceVendor == "Apple") {
+            useComputeShader = false;
+            Debug.Log("M1 GPU in Use! Disabling Compute Shader!");
+        } else {
+            useComputeShader = true;
+        }
+        #endif
         Spawn();
         cage.size = new Vector3(droneEnemySettings.size.x, 10, droneEnemySettings.size.y);
     }
@@ -28,36 +38,57 @@ public class EnemyManager : MonoBehaviour {
     public void Update() {
         if (enemies.Count > 0) {
             int numEnemies = enemies.Count;
-            EnemyData[] enemyData = new EnemyData[numEnemies];
+            if (useComputeShader) {
+                EnemyData[] enemyData = new EnemyData[numEnemies];
 
-            for (int i = 0; i < numEnemies; i++) {
-                enemyData[i].position = enemies[i].position;
-                enemyData[i].velocity = enemies[i].velocity;
+                for (int i = 0; i < numEnemies; i++) {
+                    enemyData[i].position = enemies[i].position;
+                    enemyData[i].velocity = enemies[i].velocity;
+                }
+
+                ComputeBuffer enemyBuffer = new ComputeBuffer(numEnemies, EnemyData.Size);
+                enemyBuffer.SetData(enemyData);
+
+                compute.SetBuffer(0, "enemies", enemyBuffer);
+                compute.SetInt("numEnemies", numEnemies);
+                compute.SetFloat("viewDistance", droneEnemySettings.viewDistance);
+                compute.SetFloat("viewAngle", droneEnemySettings.viewAngle);
+
+                int threadGroups = Mathf.CeilToInt(numEnemies / (float)threadGroupSize);
+                compute.Dispatch(0, threadGroups, 1, 1);
+
+                enemyBuffer.GetData(enemyData);
+
+                for (int i = 0; i < numEnemies; i++) {
+                    enemies[i].seperationVector = enemyData[i].seperationVector;
+                    enemies[i].alignmentVector = enemyData[i].alignmentVector;
+                    enemies[i].cohesionVector = enemyData[i].cohesionVector;
+                    enemies[i].numPerceivedEnemies = enemyData[i].numPerceivedEnemies;
+
+                    enemies[i].UpdateEnemy();
+                }
+
+                enemyBuffer.Release();
+            } else {
+                for (int i = 0; i < numEnemies; i++) {
+                    for (int j = 0; j < numEnemies; j++) {
+                        if (enemies[j] != enemies[i]) {
+                            Enemy enemy = enemies[i];
+                            Vector2 offset = enemy.position - enemies[j].position;
+                            float squareDistance = offset.x * offset.x + offset.y + offset.y;
+
+                            if (squareDistance < droneEnemySettings.viewDistance * droneEnemySettings.viewDistance) {
+                                enemies[j].seperationVector += (enemies[j].position - enemy.position);
+                                enemies[j].alignmentVector += enemy.velocity;
+                                enemies[j].cohesionVector += enemy.position;
+                                enemies[j].numPerceivedEnemies += 1;
+                            }
+                        }
+                    }
+
+                    enemies[i].UpdateEnemy();
+                }
             }
-
-            ComputeBuffer enemyBuffer = new ComputeBuffer(numEnemies, EnemyData.Size);
-            enemyBuffer.SetData(enemyData);
-
-            compute.SetBuffer(0, "enemies", enemyBuffer);
-            compute.SetInt("numEnemies", numEnemies);
-            compute.SetFloat("viewDistance", droneEnemySettings.viewDistance);
-            compute.SetFloat("viewAngle", droneEnemySettings.viewAngle);
-
-            int threadGroups = Mathf.CeilToInt(numEnemies / (float)threadGroupSize);
-            compute.Dispatch(0, threadGroups, 1, 1);
-
-            enemyBuffer.GetData(enemyData);
-
-            for (int i = 0; i < numEnemies; i++) {
-                enemies[i].seperationVector = enemyData[i].seperationVector;
-                enemies[i].alignmentVector = enemyData[i].alignmentVector;
-                enemies[i].cohesionVector = enemyData[i].cohesionVector;
-                enemies[i].numPerceivedEnemies = enemyData[i].numPerceivedEnemies;
-
-                enemies[i].UpdateEnemy();
-            }
-
-            enemyBuffer.Release();
         }
     }
 
