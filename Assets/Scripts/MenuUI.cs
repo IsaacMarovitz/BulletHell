@@ -51,20 +51,8 @@ public class MenuUI : MonoBehaviour {
     void Update() {
         if (Input.GetKeyDown(KeyCode.Escape) && gameStarted) {
             if (gamePaused) {
-                gamePaused = false;
-                uiCamera.Priority = 0;
-                if (currentMenu == CurrentMenu.Main) {
-                    animator.Play("Fade Out");
-                } else if (currentMenu == CurrentMenu.Video) {
-                    videoSettingsAnimator.Play("Fade Out");
-                } else if (currentMenu == CurrentMenu.Audio) {
-                    audioSettingsAnimator.Play("Fade Out");
-                }
-                currentMenu = CurrentMenu.Main;
-                gameUI.SetActive(true);
-                playerMovement.move = true;
+                Resume();
                 musicManager.Resume();
-                Cursor.visible = false;
                 StartCoroutine(FadeTime(1, pauseFadeDuration));
             } else {
                 gamePaused = true;
@@ -81,27 +69,34 @@ public class MenuUI : MonoBehaviour {
 
     public void NewGame() {
         if (gameStarted) {
-            gamePaused = false;
-            uiCamera.Priority = 0;
-            animator.Play("Fade Out");
-            gameUI.SetActive(true);
-            playerMovement.move = true;
+            Resume();
             musicManager.Resume();
-            Cursor.visible = false;
             StartCoroutine(FadeTime(1, pauseFadeDuration));
         } else {
-            uiCamera.Priority = 0;
-            animator.Play("Fade Out");
+            Resume();
             enemySettings.targetWeight = targetWeight;
-            gameUI.SetActive(true);
-            playerMovement.move = true;
             enemySettings.shootingEnabled = true;
             musicManager.ChangeAudioState(musicManager.levelOneMusic);
             gameStarted = true;
-            Cursor.visible = false;
             menuTitle.text = "PAUSED";
             newGameButtonText.text = "RESUME";
         }
+    }
+    
+    public void Resume() {
+        gamePaused = false;
+        uiCamera.Priority = 0;
+        if (currentMenu == CurrentMenu.Main) {
+            animator.Play("Fade Out");
+        } else if (currentMenu == CurrentMenu.Video) {
+            videoSettingsAnimator.Play("Fade Out");
+        } else if (currentMenu == CurrentMenu.Audio) {
+            audioSettingsAnimator.Play("Fade Out");
+        }
+        currentMenu = CurrentMenu.Main;
+        gameUI.SetActive(true);
+        playerMovement.move = true;
+        Cursor.visible = false;
     }
 
     public void VideoSettings() {

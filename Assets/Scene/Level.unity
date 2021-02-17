@@ -278,8 +278,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11458023}
-  m_LocalRotation: {x: 0.40455353, y: -0.000000030889982, z: 0.000000013664795, w: 0.91451436}
-  m_LocalPosition: {x: 0.0000023617727, y: 39.399403, z: -26.72673}
+  m_LocalRotation: {x: 0.40455353, y: -0.00000004767238, z: 0.00000002108882, w: 0.9145143}
+  m_LocalPosition: {x: 0.0000026086589, y: 39.3994, z: -26.72673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 742420297}
@@ -1790,6 +1790,7 @@ MonoBehaviour:
   scoreText: {fileID: 1147702221}
   newScoreText: {fileID: 1930962734}
   newScoreTextAnimator: {fileID: 1930962736}
+  tutorialAnimator: {fileID: 477614551}
   score: 0
 --- !u!1 &344279900
 GameObject:
@@ -2357,6 +2358,7 @@ GameObject:
   - component: {fileID: 477614548}
   - component: {fileID: 477614550}
   - component: {fileID: 477614549}
+  - component: {fileID: 477614551}
   m_Layer: 5
   m_Name: Tutorial Text
   m_TagString: Untagged
@@ -2403,11 +2405,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'USE THE MOSUE TO CONTROL YOUR DIRECTION AND SPEED
+  m_text: 'Use the mouse to control your direction and speed
+
+    Use LMB to shoot
 
 
-    PRESSS ESC FOR
-    PAUSE MENU'
+    Press
+    Esc to open the Pause Menu'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2440,7 +2444,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 17
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2484,6 +2488,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 477614547}
   m_CullTransparentMesh: 1
+--- !u!95 &477614551
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477614547}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 397006d0e96a24b36bddf08e4a56c309, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &478682990
 GameObject:
   m_ObjectHideFlags: 0
@@ -9063,6 +9086,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   currentMusic:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   musicPlayer: {fileID: 1659618522}
   audioMixer: {fileID: 24100000, guid: c44f885420c19465083309625ea0f755, type: 2}
