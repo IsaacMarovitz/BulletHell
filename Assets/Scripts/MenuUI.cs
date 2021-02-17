@@ -44,7 +44,6 @@ public class MenuUI : MonoBehaviour {
         videoSettingsAnimator.Play("Closed");
         audioSettingsAnimator.Play("Closed");
         creditsAnimator.Play("Closed");
-        menuTitle.text = "BULLET HELL";
         currentMenu = CurrentMenu.Main;
     }
 
@@ -78,11 +77,9 @@ public class MenuUI : MonoBehaviour {
             enemySettings.shootingEnabled = true;
             musicManager.ChangeAudioState(musicManager.levelOneMusic);
             gameStarted = true;
-            menuTitle.text = "PAUSED";
-            newGameButtonText.text = "RESUME";
         }
     }
-    
+
     public void Resume() {
         gamePaused = false;
         uiCamera.Priority = 0;
@@ -97,6 +94,12 @@ public class MenuUI : MonoBehaviour {
         gameUI.SetActive(true);
         playerMovement.move = true;
         Cursor.visible = false;
+    }
+
+    public void ChangeToPauseMenu() {
+        menuTitle.text = "PAUSED";
+        newGameButtonText.text = "RESUME";
+        creditsButton.gameObject.SetActive(false);
     }
 
     public void VideoSettings() {
