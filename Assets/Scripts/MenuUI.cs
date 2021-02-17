@@ -14,12 +14,15 @@ public class MenuUI : MonoBehaviour {
     public Button newGameButton;
     public Button videoSettingsButton;
     public Button audioSettingsButton;
+    public Button creditsButton;
     public Button quitButton;
     public PlayerMovement playerMovement;
     public Animator animator;
     public GameObject gameUI;
     public Animator videoSettingsAnimator;
     public Animator audioSettingsAnimator;
+    public Animator creditsAnimator;
+    public Animator textCreditsAnimator;
     [HideInInspector]
     public CurrentMenu currentMenu;
     public int pauseFadeDuration;
@@ -33,12 +36,14 @@ public class MenuUI : MonoBehaviour {
         newGameButton.onClick.AddListener(NewGame);
         videoSettingsButton.onClick.AddListener(VideoSettings);
         audioSettingsButton.onClick.AddListener(AudioSettings);
+        creditsButton.onClick.AddListener(Credits);
         quitButton.onClick.AddListener(Quit);
         targetWeight = enemySettings.targetWeight;
         enemySettings.targetWeight = 0;
         enemySettings.shootingEnabled = false;
         videoSettingsAnimator.Play("Closed");
         audioSettingsAnimator.Play("Closed");
+        creditsAnimator.Play("Closed");
         menuTitle.text = "BULLET HELL";
         currentMenu = CurrentMenu.Main;
     }
@@ -111,6 +116,13 @@ public class MenuUI : MonoBehaviour {
         currentMenu = CurrentMenu.Audio;
     }
 
+    public void Credits() {
+        animator.Play("Fade & Slide Out");
+        creditsAnimator.Play("Fade & Slide In");
+        textCreditsAnimator.Play("Scroll", -1, 0f);
+        currentMenu = CurrentMenu.Credits;
+    }
+
     public void Quit() {
         Application.Quit();
     }
@@ -128,4 +140,4 @@ public class MenuUI : MonoBehaviour {
     }
 }
 
-public enum CurrentMenu { Main, Video, Audio };
+public enum CurrentMenu { Main, Video, Audio, Credits };
