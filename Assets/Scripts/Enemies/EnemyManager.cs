@@ -24,7 +24,7 @@ public class EnemyManager : MonoBehaviour {
 
     public void Start() {
         #if !UNITY_EDITOR
-        if (SystemInfo.graphicsDeviceVendor == "Apple") {
+        if (SystemInfo.graphicsDeviceName == "Apple M1") {
             useComputeShader = false;
             Debug.Log("M1 GPU in Use! Disabling Compute Shader!");
         } else {
