@@ -21,7 +21,7 @@ public class EnemyBullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider) {
         if (collider.transform.tag == "Player") {
-            Debug.Log("Player was hit!");
+            //Debug.Log("Player was hit!");
             collider.transform.gameObject.GetComponentInParent<PlayerHealth>()?.TakeDamage(damage);
             Destroy(this.gameObject);
         }

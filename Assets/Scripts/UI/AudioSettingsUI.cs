@@ -9,7 +9,7 @@ public class AudioSettingsUI : MonoBehaviour {
     public Slider sfxSlider;
     public Slider musicSlider;
     public Animator audioSettingsAnimator;
-    public MenuUI menuUI;
+    public SettingsUI settingsUI;
     public Button backButton;
 
     void Start() {
@@ -34,7 +34,7 @@ public class AudioSettingsUI : MonoBehaviour {
 
     public void Back() {
         audioSettingsAnimator.Play("Fade & Slide Out");
-        menuUI.animator.Play("Fade & Slide In");
-        menuUI.currentMenu = CurrentMenu.Main;
+        settingsUI.animator.Play("Fade & Slide In");
+        settingsUI.currentSettingsMenu = CurrentSettingsMenu.Main;
     }
 }

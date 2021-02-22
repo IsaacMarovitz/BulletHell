@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class CreditsUI : MonoBehaviour {
 
-    public Animator creditAnimator;
+    public Animator creditsAnimator;
     public MenuUI menuUI;
     public Button backButton;
 
@@ -12,7 +12,7 @@ public class CreditsUI : MonoBehaviour {
     }
 
     void Back() {
-        creditAnimator.Play("Fade & Slide Out");
+        creditsAnimator.Play("Fade & Slide Out");
         menuUI.animator.Play("Fade & Slide In");
         menuUI.currentMenu = CurrentMenu.Main;
     }

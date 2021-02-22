@@ -12,15 +12,16 @@ public class MenuUI : MonoBehaviour {
     public TMP_Text menuTitle;
     public TMP_Text newGameButtonText;
     public Button newGameButton;
-    public Button videoSettingsButton;
-    public Button audioSettingsButton;
+    public Button settingsButton;
+    public Button scoreboardButton;
     public Button creditsButton;
     public Button quitButton;
     public PlayerMovement playerMovement;
     public Animator animator;
     public GameObject gameUI;
-    public Animator videoSettingsAnimator;
-    public Animator audioSettingsAnimator;
+    public SettingsUI settingsUI;
+    public Animator settingsAnimator;
+    public Animator scoreboardAnimator;
     public Animator creditsAnimator;
     public Animator textCreditsAnimator;
     public Animator deathAnimator;
@@ -36,15 +37,15 @@ public class MenuUI : MonoBehaviour {
 
     void Start() {
         newGameButton.onClick.AddListener(NewGame);
-        videoSettingsButton.onClick.AddListener(VideoSettings);
-        audioSettingsButton.onClick.AddListener(AudioSettings);
+        settingsButton.onClick.AddListener(Settings);
+        scoreboardButton.onClick.AddListener(Scoreboard);
         creditsButton.onClick.AddListener(Credits);
         quitButton.onClick.AddListener(Quit);
         targetWeight = enemySettings.targetWeight;
         enemySettings.targetWeight = 0;
         enemySettings.shootingEnabled = false;
-        videoSettingsAnimator.Play("Closed");
-        audioSettingsAnimator.Play("Closed");
+        settingsAnimator.Play("Closed");
+        scoreboardAnimator.Play("Closed");
         creditsAnimator.Play("Closed");
         deathAnimator.Play("Closed");
         currentMenu = CurrentMenu.Main;
@@ -91,11 +92,9 @@ public class MenuUI : MonoBehaviour {
         uiCamera.Priority = 0;
         if (currentMenu == CurrentMenu.Main) {
             animator.Play("Fade Out");
-        } else if (currentMenu == CurrentMenu.Video) {
-            videoSettingsAnimator.Play("Fade Out");
-        } else if (currentMenu == CurrentMenu.Audio) {
-            audioSettingsAnimator.Play("Fade Out");
-        }
+        } else if (currentMenu == CurrentMenu.Settings) {
+            settingsUI.CloseCurrentMenu();
+        } 
         currentMenu = CurrentMenu.Main;
         gameUI.SetActive(true);
         playerMovement.move = true;
@@ -118,18 +117,19 @@ public class MenuUI : MonoBehaviour {
         menuTitle.text = "PAUSED";
         newGameButtonText.text = "RESUME";
         creditsButton.gameObject.SetActive(false);
+        scoreboardButton.gameObject.SetActive(false);
     }
 
-    public void VideoSettings() {
+    public void Settings() {
         animator.Play("Fade & Slide Out");
-        videoSettingsAnimator.Play("Fade & Slide In");
-        currentMenu = CurrentMenu.Video;
+        settingsAnimator.Play("Fade & Slide In");
+        currentMenu = CurrentMenu.Settings;
     }
 
-    public void AudioSettings() {
+    public void Scoreboard() {
         animator.Play("Fade & Slide Out");
-        audioSettingsAnimator.Play("Fade & Slide In");
-        currentMenu = CurrentMenu.Audio;
+        scoreboardAnimator.Play("Fade & Slide In");
+        currentMenu = CurrentMenu.Scoreboard;
     }
 
     public void Credits() {
@@ -156,4 +156,4 @@ public class MenuUI : MonoBehaviour {
     }
 }
 
-public enum CurrentMenu { Main, Video, Audio, Credits };
+public enum CurrentMenu { Main, Settings, Scoreboard, Credits };

@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour {
             if (health <= 0) {
                 menuUI.Die();
                 hasDied = true;
-                Debug.Log("Player Died!");
+                //Debug.Log("Player Died!");
             }
             if (health < maxHealth) {
                 health += regenHealth * Time.deltaTime;
