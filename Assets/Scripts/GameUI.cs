@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class GameUI : MonoBehaviour {
@@ -8,6 +9,8 @@ public class GameUI : MonoBehaviour {
     public Animator newScoreTextAnimator;
     public Animator tutorialAnimator;
     public int score;
+    public Slider healthSlider;
+    public PlayerHealth playerHealth;
 
     int[] scores = { 10 };
     string[] names = { "DRONE" };
@@ -15,6 +18,11 @@ public class GameUI : MonoBehaviour {
 
     public void Start() {
         tutorialAnimator.Play("Tutorial");
+        healthSlider.maxValue = playerHealth.maxHealth;
+    }
+
+    public void Update() {
+        healthSlider.value = playerHealth.health;
     }
 
     public void AddScore(EnemyType enemyType) {

@@ -19,6 +19,7 @@ public class EnemyManager : MonoBehaviour {
     public Transform bulletParent;
     
     bool useComputeShader = true;
+    bool enemiesHaveBeenSpawned = false;
     
     List<Enemy> enemies = new List<Enemy>();
 
@@ -31,8 +32,14 @@ public class EnemyManager : MonoBehaviour {
             useComputeShader = true;
         }
         #endif
-        Spawn();
         cage.size = new Vector3(droneEnemySettings.size.x, 10, droneEnemySettings.size.y);
+    }
+
+    public void LateUpdate() {
+        if (!enemiesHaveBeenSpawned) {
+            enemiesHaveBeenSpawned = true;
+            Spawn();
+        }
     }
 
     public void Update() {
@@ -105,6 +112,8 @@ public class EnemyManager : MonoBehaviour {
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
             GameObject instantiatedEnemy = GameObject.Instantiate(droneEnemyPrefab.gameObject, position, rotation);
+            instantiatedEnemy.transform.position = position;
+            instantiatedEnemy.transform.rotation = rotation;
             instantiatedEnemy.transform.parent = this.transform;
             instantiatedEnemy.name = $"Enemy {i}";
 

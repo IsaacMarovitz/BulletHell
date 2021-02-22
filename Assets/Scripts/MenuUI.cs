@@ -23,6 +23,7 @@ public class MenuUI : MonoBehaviour {
     public Animator audioSettingsAnimator;
     public Animator creditsAnimator;
     public Animator textCreditsAnimator;
+    public Animator deathAnimator;
     [HideInInspector]
     public CurrentMenu currentMenu;
     public int pauseFadeDuration;
@@ -31,6 +32,7 @@ public class MenuUI : MonoBehaviour {
     float targetWeight;
     bool gameStarted = false;
     bool gamePaused = false;
+    bool gameEnded = false;
 
     void Start() {
         newGameButton.onClick.AddListener(NewGame);
@@ -44,11 +46,14 @@ public class MenuUI : MonoBehaviour {
         videoSettingsAnimator.Play("Closed");
         audioSettingsAnimator.Play("Closed");
         creditsAnimator.Play("Closed");
+        deathAnimator.Play("Closed");
         currentMenu = CurrentMenu.Main;
+        Cursor.visible = true;
+        Time.timeScale = 1;
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape) && gameStarted) {
+        if (Input.GetKeyDown(KeyCode.Escape) && gameStarted && !gameEnded) {
             if (gamePaused) {
                 Resume();
                 musicManager.Resume();
@@ -82,6 +87,7 @@ public class MenuUI : MonoBehaviour {
 
     public void Resume() {
         gamePaused = false;
+        gameEnded = false;
         uiCamera.Priority = 0;
         if (currentMenu == CurrentMenu.Main) {
             animator.Play("Fade Out");
@@ -94,6 +100,18 @@ public class MenuUI : MonoBehaviour {
         gameUI.SetActive(true);
         playerMovement.move = true;
         Cursor.visible = false;
+    }
+
+    public void Die() {
+        gamePaused = true;
+        gameEnded = true;
+        uiCamera.Priority = 20;
+        deathAnimator.Play("Fade In");
+        gameUI.SetActive(false);
+        playerMovement.move = false;
+        musicManager.Pause();
+        Cursor.visible = true;
+        StartCoroutine(FadeTime(0, pauseFadeDuration));
     }
 
     public void ChangeToPauseMenu() {

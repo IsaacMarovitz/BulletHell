@@ -30,6 +30,7 @@ public class MusicManager : MonoBehaviour {
         musicPlayer.volume = 0;
         currentClipPlaybackTime = currentMusic[randomIndex].length;
         StartCoroutine(FadeIn());
+        audioMixer.SetFloat("MusicLowpassCutoff", 22000);
     }
 
     void Update() {

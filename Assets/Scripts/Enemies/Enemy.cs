@@ -95,28 +95,28 @@ public class Enemy : MonoBehaviour {
 
         if (numPerceivedEnemies > 0) {
             seperationVector /= numPerceivedEnemies;
-            acceleration += CheckNullAndAdd(seperationVector.normalized, enemySettings.seperationWeight);
+            acceleration += CheckNullAndTimes(seperationVector.normalized, enemySettings.seperationWeight);
             alignmentVector /= numPerceivedEnemies;
-            acceleration += CheckNullAndAdd(alignmentVector.normalized, enemySettings.alignmentWeight);
+            acceleration += CheckNullAndTimes(alignmentVector.normalized, enemySettings.alignmentWeight);
             cohesionVector /= numPerceivedEnemies;
             cohesionVector -= position;
-            acceleration += CheckNullAndAdd(cohesionVector.normalized, enemySettings.cohesionWeight);
+            acceleration += CheckNullAndTimes(cohesionVector.normalized, enemySettings.cohesionWeight);
         }
         targetVector = Vector3ToVector2(player.transform.position) - position;
-        acceleration += CheckNullAndAdd(targetVector.normalized, enemySettings.targetWeight);
+        acceleration += CheckNullAndTimes(targetVector.normalized, enemySettings.targetWeight);
         targetDistanceVector = TargetDistance();
-        acceleration += CheckNullAndAdd(targetDistanceVector.normalized, enemySettings.targetDistanceWeight);
+        acceleration += CheckNullAndTimes(targetDistanceVector.normalized, enemySettings.targetDistanceWeight);
 
         positionLimitVector = LimitPosition();
-        acceleration += CheckNullAndAdd(positionLimitVector, enemySettings.positionLimitWeight);
+        acceleration += CheckNullAndTimes(positionLimitVector, enemySettings.positionLimitWeight);
 
         velocity += acceleration * Time.deltaTime;
         float speed = velocity.magnitude;
         Vector2 dir = velocity / speed;
         speed = Mathf.Clamp(speed, enemySettings.minSpeed, enemySettings.maxSpeed);
-        velocity = dir * speed;
+        velocity = CheckNullAndTimes(dir * speed, 1);
 
-        position += CheckNullAndAdd(velocity, Time.deltaTime);
+        position += velocity * Time.deltaTime;
         this.transform.position = Vector2ToVector3(position);
         if (debug)
             Debug.DrawLine(this.transform.position, Vector2ToVector3(velocity) + this.transform.position, Color.white);
@@ -162,7 +162,7 @@ public class Enemy : MonoBehaviour {
         return new Vector2(vector.x, vector.z);
     }
 
-    public Vector2 CheckNullAndAdd(Vector2 vector, float weight) {
+    public Vector2 CheckNullAndTimes(Vector2 vector, float weight) {
         if (float.IsNaN(vector.x) || float.IsNaN(vector.x)) {
             return Vector2.zero;
         } else {
