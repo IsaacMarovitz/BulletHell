@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Cinemachine;
 using TMPro;
 using System.Collections;
@@ -15,9 +16,13 @@ public class MenuUI : MonoBehaviour {
     public Button settingsButton;
     public Button scoreboardButton;
     public Button creditsButton;
+    public Button mainMenuButton;
     public Button quitButton;
     public PlayerMovement playerMovement;
     public Animator animator;
+    public GameObject mainMenu;
+    public GameObject loadingMenu;
+    public Slider loadingSlider;
     public GameObject gameUI;
     public SettingsUI settingsUI;
     public Animator settingsAnimator;
@@ -40,7 +45,9 @@ public class MenuUI : MonoBehaviour {
         settingsButton.onClick.AddListener(Settings);
         scoreboardButton.onClick.AddListener(Scoreboard);
         creditsButton.onClick.AddListener(Credits);
+        mainMenuButton.onClick.AddListener(MainMenu);
         quitButton.onClick.AddListener(Quit);
+        mainMenuButton.gameObject.SetActive(false);
         targetWeight = enemySettings.targetWeight;
         enemySettings.targetWeight = 0;
         enemySettings.shootingEnabled = false;
@@ -118,6 +125,7 @@ public class MenuUI : MonoBehaviour {
         newGameButtonText.text = "RESUME";
         creditsButton.gameObject.SetActive(false);
         scoreboardButton.gameObject.SetActive(false);
+        mainMenuButton.gameObject.SetActive(true);
     }
 
     public void Settings() {
@@ -139,6 +147,12 @@ public class MenuUI : MonoBehaviour {
         currentMenu = CurrentMenu.Credits;
     }
 
+    public void MainMenu() {
+        mainMenu.SetActive(false);
+        loadingMenu.SetActive(true);
+        StartCoroutine(LoadAsync(SceneManager.GetActiveScene().buildIndex));
+    }
+
     public void Quit() {
         Application.Quit();
     }
@@ -153,6 +167,17 @@ public class MenuUI : MonoBehaviour {
             yield return null;
         }
         yield break;
+    }
+
+    IEnumerator LoadAsync(int sceneIndex) {
+        AsyncOperation loadScene = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single);
+
+        while(!loadScene.isDone) {
+            float progress = Mathf.Clamp01(loadScene.progress / 0.9f);
+            loadingSlider.value = progress;
+
+            yield return null;
+        }
     }
 }
 

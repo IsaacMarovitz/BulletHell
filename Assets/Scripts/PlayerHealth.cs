@@ -5,12 +5,16 @@ public class PlayerHealth : MonoBehaviour {
     public float maxHealth;
     public float health;
     public float regenHealth;
+    public float timeToStartRegen;
     public MenuUI menuUI;
 
     public bool hasDied = false;
 
+    float timeSinceLastDamage;
+
     public void TakeDamage(float damage) {
         health -= damage;
+        timeSinceLastDamage = 0;
     }
 
     public void Start() {
@@ -25,7 +29,11 @@ public class PlayerHealth : MonoBehaviour {
                 //Debug.Log("Player Died!");
             }
             if (health < maxHealth) {
-                health += regenHealth * Time.deltaTime;
+                if (timeSinceLastDamage >= timeToStartRegen) {
+                    health += regenHealth * Time.deltaTime;
+                } else {
+                    timeSinceLastDamage += Time.deltaTime;
+                }
             }
         }
     }
