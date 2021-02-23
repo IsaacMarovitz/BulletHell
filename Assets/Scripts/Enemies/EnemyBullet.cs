@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour {
+
     public float bulletSpeed = 15;
     public float decayTime = 5;
     public int damage = 5;

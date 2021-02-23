@@ -147,7 +147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1025875153573968376}
   - component: {fileID: 779816431024230570}
-  - component: {fileID: 5006112515036318303}
+  - component: {fileID: 6095559454365088367}
   - component: {fileID: 5445519356851257797}
   m_Layer: 0
   m_Name: Drone
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
---- !u!114 &5006112515036318303
+--- !u!114 &6095559454365088367
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1025875153573968379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e6cd3c0daa5d42fd87d5acc306fadd5, type: 3}
+  m_Script: {fileID: 11500000, guid: 0311c104297b641a6809bd6c4c179fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemySettings: {fileID: 0}
@@ -210,16 +210,16 @@ MonoBehaviour:
   numPerceivedEnemies: 0
   debug: 0
   enemyManager: {fileID: 0}
-  bulletPrefab: {fileID: 0}
   player: {fileID: 0}
-  positionDifference: {x: 0, y: 0, z: 0}
-  angle: 0
+  enemy: {fileID: 0}
+  bulletPrefab: {fileID: 0}
   shoot: 0
   gunCooldown: 0.1
   bulletSpawn: {fileID: 1025875153888317389}
   bulletParent: {fileID: 0}
   audioSource: {fileID: 5445519356851257797}
   gunSFX: {fileID: 8300000, guid: ff0bf73bf5c424234b03d6c18bc5b60b, type: 3}
+  aimVariation: 5
 --- !u!82 &5445519356851257797
 AudioSource:
   m_ObjectHideFlags: 0

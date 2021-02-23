@@ -4,50 +4,47 @@ using UnityEditor;
 [CustomEditor(typeof(EnemyManager))]
 public class EnemyManagerEditor : Editor {
 
-    public bool showDroneMenu = false;
-    public bool showCannonMenu = false;
-    public bool showFighterMenu = false;
-
     public override void OnInspectorGUI() {
         serializedObject.Update();
 
         SerializedProperty droneEnemySettings_prop = serializedObject.FindProperty("droneEnemySettings");
         SerializedProperty droneEnemyPrefab_prop = serializedObject.FindProperty("droneEnemyPrefab");
-        SerializedProperty cannonEnemySettings_prop = serializedObject.FindProperty("cannonEnemySettings");
-        SerializedProperty cannonEnemyPrefab_prop = serializedObject.FindProperty("cannonEnemyPrefab");
-        SerializedProperty fighterEnemySettings_prop = serializedObject.FindProperty("fighterEnemySettings");
-        SerializedProperty fighterEnemyPrefab_prop = serializedObject.FindProperty("fighterEnemyPrefab");
+        SerializedProperty numOfDronesToSpawn_prop = serializedObject.FindProperty("numOfDronesToSpawn");
 
-        showDroneMenu = EditorGUILayout.BeginFoldoutHeaderGroup(showDroneMenu, "Drone Settings");
-        if (showDroneMenu) {
-            EditorGUILayout.PropertyField(droneEnemySettings_prop, new GUIContent("Settings"));
-            EditorGUILayout.PropertyField(droneEnemyPrefab_prop, new GUIContent("Prefab"));
-        }
+        EditorGUILayout.LabelField("Drone Settings", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(droneEnemySettings_prop, new GUIContent("Settings"));
+        EditorGUILayout.PropertyField(droneEnemyPrefab_prop, new GUIContent("Prefab"));
+        EditorGUILayout.PropertyField(numOfDronesToSpawn_prop, new GUIContent("No. to Spawn"));
+
         EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.Space(10);
         
-        showCannonMenu = EditorGUILayout.BeginFoldoutHeaderGroup(showCannonMenu, "Cannon Settings");
-        if (showCannonMenu) {
-            EditorGUILayout.PropertyField(cannonEnemySettings_prop, new GUIContent("Settings"));
-            EditorGUILayout.PropertyField(cannonEnemyPrefab_prop, new GUIContent("Prefab"));
-        }
+        SerializedProperty cannonEnemySettings_prop = serializedObject.FindProperty("cannonEnemySettings");
+        SerializedProperty cannonEnemyPrefab_prop = serializedObject.FindProperty("cannonEnemyPrefab");
+        SerializedProperty numOfCannonsToSpawn_prop = serializedObject.FindProperty("numOfCannonsToSpawn");
+
+        EditorGUILayout.LabelField("Cannon Settings", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(cannonEnemySettings_prop, new GUIContent("Settings"));
+        EditorGUILayout.PropertyField(cannonEnemyPrefab_prop, new GUIContent("Prefab"));
+        EditorGUILayout.PropertyField(numOfCannonsToSpawn_prop, new GUIContent("No. to Spawn"));
+        
         EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.Space(10);
 
-        showFighterMenu = EditorGUILayout.BeginFoldoutHeaderGroup(showFighterMenu, "Fighter Settings");
-        if (showFighterMenu) {
-            EditorGUILayout.PropertyField(fighterEnemySettings_prop, new GUIContent("Settings"));
-            EditorGUILayout.PropertyField(fighterEnemyPrefab_prop, new GUIContent("Prefab"));
-        }
+        SerializedProperty fighterEnemySettings_prop = serializedObject.FindProperty("fighterEnemySettings");
+        SerializedProperty fighterEnemyPrefab_prop = serializedObject.FindProperty("fighterEnemyPrefab");
+        SerializedProperty numOfFightersToSpawn_prop = serializedObject.FindProperty("numOfFightersToSpawn");
+
+        EditorGUILayout.LabelField("Fighter Settings", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(fighterEnemySettings_prop, new GUIContent("Settings"));
+        EditorGUILayout.PropertyField(fighterEnemyPrefab_prop, new GUIContent("Prefab"));
+        EditorGUILayout.PropertyField(numOfFightersToSpawn_prop, new GUIContent("No. to Spawn"));
+        
         EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.Space(10);
 
         SerializedProperty compute_prop = serializedObject.FindProperty("compute");
         EditorGUILayout.PropertyField(compute_prop, new GUIContent("Compute Shader"));
-        SerializedProperty numEnemiesToSpawn_prop = serializedObject.FindProperty("numEnemiesToSpawn");
-        EditorGUILayout.PropertyField(numEnemiesToSpawn_prop, new GUIContent("No. of Enemies to Spawn"));
-        SerializedProperty cage_prop = serializedObject.FindProperty("cage");
-        EditorGUILayout.PropertyField(cage_prop, new GUIContent("Cage"));
         SerializedProperty player_prop = serializedObject.FindProperty("player");
         EditorGUILayout.PropertyField(player_prop, new GUIContent("Player"));
         SerializedProperty bulletPrefab_prop = serializedObject.FindProperty("bulletPrefab");

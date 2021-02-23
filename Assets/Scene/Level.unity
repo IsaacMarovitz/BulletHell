@@ -278,8 +278,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11458023}
-  m_LocalRotation: {x: 0.40455353, y: -0.00000004459346, z: 0.000000019726802, w: 0.9145143}
-  m_LocalPosition: {x: 0.0000028017832, y: 39.3994, z: -26.72673}
+  m_LocalRotation: {x: 0.40455353, y: -0.00000003625014, z: 0.000000016035965, w: 0.91451436}
+  m_LocalPosition: {x: 0.0000026790449, y: 39.399403, z: -26.72673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 742420297}
@@ -1246,7 +1246,6 @@ GameObject:
   m_Component:
   - component: {fileID: 163633483}
   - component: {fileID: 163633482}
-  - component: {fileID: 163633484}
   m_Layer: 0
   m_Name: Enemy Manager
   m_TagString: Untagged
@@ -1267,14 +1266,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   droneEnemySettings: {fileID: 11400000, guid: 1e150d3340f474ba987e41ad13ea0c7b, type: 2}
-  droneEnemyPrefab: {fileID: 5006112515036318303, guid: 3c0fee5221dff44c3a2a568bcdbc07ae, type: 3}
-  cannonEnemySettings: {fileID: 0}
+  droneEnemyPrefab: {fileID: 6095559454365088367, guid: 3c0fee5221dff44c3a2a568bcdbc07ae, type: 3}
+  numOfDronesToSpawn: 600
+  cannonEnemySettings: {fileID: 11400000, guid: 653974cb54fd34662bf8e3c47fbabaa4, type: 2}
   cannonEnemyPrefab: {fileID: 0}
-  fighterEnemySettings: {fileID: 0}
+  numOfCannonsToSpawn: 0
+  fighterEnemySettings: {fileID: 11400000, guid: e7dba2d5cc78d4215b4b2764d46f6a67, type: 2}
   fighterEnemyPrefab: {fileID: 0}
+  numOfFightersToSpawn: 0
   compute: {fileID: 7200000, guid: cc6121bf3f3ca4bb69638fbe03148bbf, type: 3}
-  numEnemiesToSpawn: 600
-  cage: {fileID: 163633484}
   player: {fileID: 1589297669}
   bulletPrefab: {fileID: 8621505155810143661, guid: a3d3f549302bf4ff8a3c566988ad4249, type: 3}
   bulletParent: {fileID: 1021285713}
@@ -1292,19 +1292,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &163633484
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 163633481}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &172397475
 GameObject:
   m_ObjectHideFlags: 0
@@ -11273,7 +11260,7 @@ MonoBehaviour:
   moveSpeed: 30
   maxTurnAngle: 130
   bulletPrefab: {fileID: 9114090967791437940, guid: 2436eb2c85bae4b2fb3783f702479ea4, type: 3}
-  gunCooldown: 0.1
+  gunCooldown: 0.01
   bulletSpawn: {fileID: 1837085747}
   bulletParent: {fileID: 1021285713}
   gameUI: {fileID: 326699819}
@@ -11799,6 +11786,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   currentMusic:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   musicPlayer: {fileID: 1659618522}
   audioMixer: {fileID: 24100000, guid: c44f885420c19465083309625ea0f755, type: 2}

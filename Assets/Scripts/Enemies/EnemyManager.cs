@@ -6,34 +6,21 @@ public class EnemyManager : MonoBehaviour {
     const int threadGroupSize = 64;
 
     public EnemySettings droneEnemySettings;
-    public Enemy droneEnemyPrefab;
+    public Drone droneEnemyPrefab;
+    public int numOfDronesToSpawn;
     public EnemySettings cannonEnemySettings;
-    public Enemy cannonEnemyPrefab;
+    public Cannon cannonEnemyPrefab;
+    public int numOfCannonsToSpawn;
     public EnemySettings fighterEnemySettings;
-    public Enemy fighterEnemyPrefab;
+    public Fighter fighterEnemyPrefab;
+    public int numOfFightersToSpawn;
     public ComputeShader compute;
-    public int numEnemiesToSpawn;
-    public BoxCollider cage;
     public GameObject player;
     public GameObject bulletPrefab;
     public Transform bulletParent;
     
-    bool useComputeShader = true;
     bool enemiesHaveBeenSpawned = false;
-    
     List<Enemy> enemies = new List<Enemy>();
-
-    public void Start() {
-        #if !UNITY_EDITOR
-        if (SystemInfo.graphicsDeviceName == "Apple M1") {
-            useComputeShader = false;
-            Debug.Log("M1 GPU in Use! Disabling Compute Shader!");
-        } else {
-            useComputeShader = true;
-        }
-        #endif
-        cage.size = new Vector3(droneEnemySettings.size.x, 10, droneEnemySettings.size.y);
-    }
 
     public void LateUpdate() {
         if (!enemiesHaveBeenSpawned) {
@@ -45,69 +32,42 @@ public class EnemyManager : MonoBehaviour {
     public void Update() {
         if (enemies.Count > 0) {
             int numEnemies = enemies.Count;
-            if (useComputeShader) {
-                EnemyData[] enemyData = new EnemyData[numEnemies];
+            EnemyData[] enemyData = new EnemyData[numEnemies];
 
-                for (int i = 0; i < numEnemies; i++) {
-                    enemyData[i].position = enemies[i].position;
-                    enemyData[i].velocity = enemies[i].velocity;
-                }
-
-                ComputeBuffer enemyBuffer = new ComputeBuffer(numEnemies, EnemyData.Size);
-                enemyBuffer.SetData(enemyData);
-
-                compute.SetBuffer(0, "enemies", enemyBuffer);
-                compute.SetInt("numEnemies", numEnemies);
-                compute.SetFloat("viewDistance", droneEnemySettings.viewDistance);
-                compute.SetFloat("viewAngle", droneEnemySettings.viewAngle);
-
-                int threadGroups = Mathf.CeilToInt(numEnemies / (float)threadGroupSize);
-                compute.Dispatch(0, threadGroups, 1, 1);
-
-                enemyBuffer.GetData(enemyData);
-
-                for (int i = 0; i < numEnemies; i++) {
-                    enemies[i].seperationVector = enemyData[i].seperationVector;
-                    enemies[i].alignmentVector = enemyData[i].alignmentVector;
-                    enemies[i].cohesionVector = enemyData[i].cohesionVector;
-                    enemies[i].numPerceivedEnemies = enemyData[i].numPerceivedEnemies;
-
-                    enemies[i].UpdateEnemy();
-                }
-
-                enemyBuffer.Release();
-            } else {
-                for (int i = 0; i < numEnemies; i++) {
-                    for (int j = 0; j < numEnemies; j++) {
-                        if (enemies[j] != enemies[i]) {
-                            Enemy enemy = enemies[i];
-                            Vector2 offset = enemy.position - enemies[j].position;
-                            float squareDistance = offset.x * offset.x + offset.y + offset.y;
-
-                            if (squareDistance < droneEnemySettings.viewDistance * droneEnemySettings.viewDistance) {
-                                enemies[j].seperationVector += (enemies[j].position - enemy.position);
-                                enemies[j].alignmentVector += enemy.velocity;
-                                enemies[j].cohesionVector += enemy.position;
-                                enemies[j].numPerceivedEnemies += 1;
-                            }
-                        }
-                    }
-
-                    enemies[i].UpdateEnemy();
-                }
+            for (int i = 0; i < numEnemies; i++) {
+                enemyData[i].position = enemies[i].position;
+                enemyData[i].velocity = enemies[i].velocity;
             }
-        }
-    }
 
-    public void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        if (droneEnemySettings != null) {
-            Gizmos.DrawWireCube(this.transform.position, new Vector3(droneEnemySettings.size.x * 2, 10, droneEnemySettings.size.y * 2));
+            int size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(EnemyData));
+            ComputeBuffer enemyBuffer = new ComputeBuffer(numEnemies, size);
+            enemyBuffer.SetData(enemyData);
+
+            compute.SetBuffer(0, "enemies", enemyBuffer);
+            compute.SetInt("numEnemies", numEnemies);
+            compute.SetFloat("viewDistance", droneEnemySettings.viewDistance);
+            compute.SetFloat("viewAngle", droneEnemySettings.viewAngle);
+
+            int threadGroups = Mathf.CeilToInt(numEnemies / (float)threadGroupSize);
+            compute.Dispatch(0, threadGroups, 1, 1);
+
+            enemyBuffer.GetData(enemyData);
+
+            for (int i = 0; i < numEnemies; i++) {
+                enemies[i].seperationVector = enemyData[i].seperationVector;
+                enemies[i].alignmentVector = enemyData[i].alignmentVector;
+                enemies[i].cohesionVector = enemyData[i].cohesionVector;
+                enemies[i].numPerceivedEnemies = enemyData[i].numPerceivedEnemies;
+
+                enemies[i].UpdateEnemy();
+            }
+
+            enemyBuffer.Release();
         }
     }
 
     public void Spawn() {
-        for (int i = 0; i < numEnemiesToSpawn; i++) {
+        for (int i = 0; i < numOfDronesToSpawn; i++) {
             Vector3 position = new Vector3(Random.Range(-droneEnemySettings.size.x, droneEnemySettings.size.x), 0, Random.Range(-droneEnemySettings.size.y, droneEnemySettings.size.y));
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
@@ -115,14 +75,46 @@ public class EnemyManager : MonoBehaviour {
             instantiatedEnemy.transform.position = position;
             instantiatedEnemy.transform.rotation = rotation;
             instantiatedEnemy.transform.parent = this.transform;
-            instantiatedEnemy.name = $"Enemy {i}";
+            instantiatedEnemy.name = $"Drone {i}";
 
-            Enemy enemy = instantiatedEnemy.GetComponent<Enemy>();
+            Drone enemy = instantiatedEnemy.GetComponent<Drone>();
             enemy.enemySettings = droneEnemySettings;
             enemy.enemyManager = this;
             enemy.player = player;
             enemy.bulletPrefab = bulletPrefab;
             enemy.bulletParent = bulletParent;
+            enemies.Add(enemy);
+        }
+        for (int i = 0; i < numOfCannonsToSpawn; i++) {
+            Vector3 position = new Vector3(Random.Range(-cannonEnemySettings.size.x, cannonEnemySettings.size.x), 0, Random.Range(-cannonEnemySettings.size.y, cannonEnemySettings.size.y));
+            Quaternion rotation = Quaternion.identity;
+            rotation.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+            GameObject instantiatedEnemy = GameObject.Instantiate(cannonEnemyPrefab.gameObject, position, rotation);
+            instantiatedEnemy.transform.position = position;
+            instantiatedEnemy.transform.rotation = rotation;
+            instantiatedEnemy.transform.parent = this.transform;
+            instantiatedEnemy.name = $"Cannon {i}";
+
+            Cannon enemy = instantiatedEnemy.GetComponent<Cannon>();
+            enemy.enemySettings = cannonEnemySettings;
+            enemy.enemyManager = this;
+            enemy.player = player;
+            enemies.Add(enemy);
+        }
+        for (int i = 0; i < numOfFightersToSpawn; i++) {
+            Vector3 position = new Vector3(Random.Range(-fighterEnemySettings.size.x, fighterEnemySettings.size.x), 0, Random.Range(-fighterEnemySettings.size.y, fighterEnemySettings.size.y));
+            Quaternion rotation = Quaternion.identity;
+            rotation.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+            GameObject instantiatedEnemy = GameObject.Instantiate(fighterEnemyPrefab.gameObject, position, rotation);
+            instantiatedEnemy.transform.position = position;
+            instantiatedEnemy.transform.rotation = rotation;
+            instantiatedEnemy.transform.parent = this.transform;
+            instantiatedEnemy.name = $"Fighter {i}";
+
+            Fighter enemy = instantiatedEnemy.GetComponent<Fighter>();
+            enemy.enemySettings = fighterEnemySettings;
+            enemy.enemyManager = this;
+            enemy.player = player;
             enemies.Add(enemy);
         }
     }
@@ -139,11 +131,5 @@ public class EnemyManager : MonoBehaviour {
         public Vector2 alignmentVector;
         public Vector2 cohesionVector;
         public int numPerceivedEnemies;
-
-        public static int Size {
-            get {
-                return sizeof (float) * 2 * 5 + sizeof (int);
-            }
-        }
     }
 }
