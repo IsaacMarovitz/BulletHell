@@ -45,12 +45,31 @@ public class VideoSettingsUI : MonoBehaviour {
             }
         }
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = options.Count-1;
-        SetResolution(options.Count-1);
         resolutionDropdown.onValueChanged.AddListener(SetResolution);
 
         qualityDropdown.value = QualitySettings.GetQualityLevel();
         qualityDropdown.onValueChanged.AddListener(SetQuality);
+
+        SaveData saveData = SaveSystem.Load();
+        if (saveData != null) {
+            int index = resolutionDropdown.options.IndexOf(new TMP_Dropdown.OptionData(SaveResolutionToString(saveData.resolutionDim)));
+            if (index >= 0) {
+                SetResolution(index);
+                resolutionDropdown.value = index;
+            } else {
+                Debug.Log("<b>Video Settings:</b> Saved resolution not found!");
+            }
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreen, saveData.refreshRate);
+            qualityDropdown.value = saveData.qualityIndex;
+            QualitySettings.SetQualityLevel(saveData.qualityIndex);
+            vsyncToggle.isOn = saveData.vsyncEnabled;
+            QualitySettings.vSyncCount = saveData.vsyncEnabled ? 1 : 0;
+            fullscreenToggle.isOn = saveData.isFullscreen;
+            Screen.fullScreen = saveData.isFullscreen;
+        } else {
+            SetResolution(options.Count-1);
+            resolutionDropdown.value = options.Count-1;
+        }
     }
 
     public void VSync(bool value) {
@@ -77,9 +96,14 @@ public class VideoSettingsUI : MonoBehaviour {
         return  resolution.width + " x " + resolution.height;
     }
 
+    string SaveResolutionToString(int[] resolution) {
+        return resolution[0] + " x " + resolution[1];
+    }
+
     public void Back() {
         videoSettingsAnimator.Play("Fade & Slide Out");
         settingsUI.animator.Play("Fade & Slide In");
         settingsUI.currentSettingsMenu = CurrentSettingsMenu.Main;
+        SaveSystem.SaveResolution();
     }
 }

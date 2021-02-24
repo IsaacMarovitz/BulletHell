@@ -35,6 +35,9 @@ public class PlayerHealth : MonoBehaviour {
                     timeSinceLastDamage += Time.deltaTime;
                 }
             }
+            if (health > maxHealth) {
+                health = maxHealth;
+            }
         }
     }
 }

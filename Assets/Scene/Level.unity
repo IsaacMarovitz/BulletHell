@@ -278,8 +278,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11458023}
-  m_LocalRotation: {x: 0.40455356, y: -0.000000065209285, z: 0.00000002884662, w: 0.9145143}
-  m_LocalPosition: {x: 0.0000031050633, y: 39.3994, z: -26.72673}
+  m_LocalRotation: {x: 0.40455356, y: -0.000000032907455, z: 0.0000000145572665, w: 0.9145143}
+  m_LocalPosition: {x: 0.00000262987, y: 39.3994, z: -26.72673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 742420297}
@@ -7955,7 +7955,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Benchmark 1
+  m_text: Benchmark 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8951,7 +8951,7 @@ MonoBehaviour:
   mainMenu: {fileID: 760374714}
   loadingMenu: {fileID: 1035762968}
   loadingSlider: {fileID: 1927409605}
-  gameUI: {fileID: 326699812}
+  gameUI: {fileID: 326699819}
   settingsUI: {fileID: 1274582381}
   settingsAnimator: {fileID: 1274582380}
   scoreboardAnimator: {fileID: 1661314768}
@@ -12103,7 +12103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 4000
   health: 0
-  regenHealth: 200
+  regenHealth: 500
   timeToStartRegen: 2
   menuUI: {fileID: 1168391896}
   hasDied: 0

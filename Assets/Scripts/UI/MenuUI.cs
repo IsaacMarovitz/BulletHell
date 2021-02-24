@@ -23,7 +23,7 @@ public class MenuUI : MonoBehaviour {
     public GameObject mainMenu;
     public GameObject loadingMenu;
     public Slider loadingSlider;
-    public GameObject gameUI;
+    public GameUI gameUI;
     public SettingsUI settingsUI;
     public Animator settingsAnimator;
     public Animator scoreboardAnimator;
@@ -36,6 +36,9 @@ public class MenuUI : MonoBehaviour {
     public AnimationCurve timeCurve;
 
     float targetWeight;
+    float startTime;
+    float pauseStartTime;
+    float pauseTime;
     bool gameStarted = false;
     bool gamePaused = false;
     bool gameEnded = false;
@@ -64,13 +67,15 @@ public class MenuUI : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape) && gameStarted && !gameEnded) {
             if (gamePaused) {
                 Resume();
+                pauseTime += (Time.realtimeSinceStartup - pauseStartTime);
                 musicManager.Resume();
                 StartCoroutine(FadeTime(1, pauseFadeDuration));
             } else {
                 gamePaused = true;
+                pauseStartTime = Time.realtimeSinceStartup;
                 uiCamera.Priority = 20;
                 animator.Play("Fade In");
-                gameUI.SetActive(false);
+                gameUI.gameObject.SetActive(false);
                 playerMovement.move = false;
                 musicManager.Pause();
                 Cursor.visible = true;
@@ -82,10 +87,12 @@ public class MenuUI : MonoBehaviour {
     public void NewGame() {
         if (gameStarted) {
             Resume();
+            pauseTime += (Time.realtimeSinceStartup - pauseStartTime);
             musicManager.Resume();
             StartCoroutine(FadeTime(1, pauseFadeDuration));
         } else {
             Resume();
+            startTime = Time.realtimeSinceStartup;
             enemySettings.targetWeight = targetWeight;
             enemySettings.shootingEnabled = true;
             musicManager.ChangeAudioState(musicManager.levelOneMusic);
@@ -103,7 +110,7 @@ public class MenuUI : MonoBehaviour {
             settingsUI.CloseCurrentMenu();
         } 
         currentMenu = CurrentMenu.Main;
-        gameUI.SetActive(true);
+        gameUI.gameObject.SetActive(true);
         playerMovement.move = true;
         Cursor.visible = false;
     }
@@ -113,10 +120,12 @@ public class MenuUI : MonoBehaviour {
         gameEnded = true;
         uiCamera.Priority = 20;
         deathAnimator.Play("Fade In");
-        gameUI.SetActive(false);
+        gameUI.gameObject.SetActive(false);
         playerMovement.move = false;
         musicManager.Pause();
         Cursor.visible = true;
+        print($"<b>Save System:</b> Saving run: {gameUI.score}, {(Time.realtimeSinceStartup - startTime) - pauseTime}");
+        SaveSystem.SaveRun(new Run(gameUI.score, (Time.realtimeSinceStartup - startTime) - pauseTime));
         StartCoroutine(FadeTime(0, pauseFadeDuration));
     }
 

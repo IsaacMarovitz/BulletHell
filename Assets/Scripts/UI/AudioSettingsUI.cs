@@ -17,6 +17,17 @@ public class AudioSettingsUI : MonoBehaviour {
         sfxSlider.onValueChanged.AddListener(SetSFX);
         musicSlider.onValueChanged.AddListener(SetMusic);
         backButton.onClick.AddListener(Back);
+
+        SaveData saveData = SaveSystem.Load();
+        if (saveData != null) {
+            masterSlider.value = saveData.masterVolume;
+            sfxSlider.value = saveData.sfxVolume;
+            musicSlider.value = saveData.musicVolume;
+
+            SetMaster(saveData.masterVolume);
+            SetSFX(saveData.sfxVolume);
+            SetMusic(saveData.musicVolume);
+        }
     }
 
     public void SetMaster(float value) {
@@ -36,5 +47,6 @@ public class AudioSettingsUI : MonoBehaviour {
         audioSettingsAnimator.Play("Fade & Slide Out");
         settingsUI.animator.Play("Fade & Slide In");
         settingsUI.currentSettingsMenu = CurrentSettingsMenu.Main;
+        SaveSystem.SaveAudioSettings(masterSlider.value, sfxSlider.value, musicSlider.value);
     }
 }
