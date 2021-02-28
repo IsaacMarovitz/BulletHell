@@ -12,8 +12,8 @@ public class GameUI : MonoBehaviour {
     public Slider healthSlider;
     public PlayerHealth playerHealth;
 
-    int[] scores = { 10 };
-    string[] names = { "DRONE" };
+    int[] scores = { 10, 50, 25 };
+    string[] names = { "DRONE", "CANNON", "FIGHTER" };
     int newScoreTextScore = 0;
 
     public void Start() {
@@ -45,4 +45,4 @@ public class GameUI : MonoBehaviour {
 
 }
 
-public enum EnemyType{ Drone };
+public enum EnemyType{ Drone, Cannon, Fighter };

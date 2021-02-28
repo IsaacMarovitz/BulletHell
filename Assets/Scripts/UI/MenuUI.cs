@@ -7,7 +7,9 @@ using System.Collections;
 
 public class MenuUI : MonoBehaviour {
     
-    public EnemySettings enemySettings;
+    public EnemySettings droneSettings;
+    public EnemySettings cannonSettings;
+    public EnemySettings fighterSettings;
     public MusicManager musicManager;
     public CinemachineVirtualCamera uiCamera;
     public TMP_Text menuTitle;
@@ -35,7 +37,9 @@ public class MenuUI : MonoBehaviour {
     public int pauseFadeDuration;
     public AnimationCurve timeCurve;
 
-    float targetWeight;
+    float droneTargetWeight;
+    float cannonTargetWeight;
+    float fighterTargetWeight;
     float startTime;
     float pauseStartTime;
     float pauseTime;
@@ -51,9 +55,15 @@ public class MenuUI : MonoBehaviour {
         mainMenuButton.onClick.AddListener(MainMenu);
         quitButton.onClick.AddListener(Quit);
         mainMenuButton.gameObject.SetActive(false);
-        targetWeight = enemySettings.targetWeight;
-        enemySettings.targetWeight = 0;
-        enemySettings.shootingEnabled = false;
+        droneTargetWeight = droneSettings.targetWeight;
+        droneSettings.targetWeight = 0;
+        droneSettings.shootingEnabled = false;
+        cannonTargetWeight = cannonSettings.targetWeight;
+        cannonSettings.targetWeight = 0;
+        cannonSettings.shootingEnabled = false;
+        fighterTargetWeight = fighterSettings.targetWeight;
+        fighterSettings.targetWeight = 0;
+        fighterSettings.shootingEnabled = false;
         settingsAnimator.Play("Closed");
         scoreboardAnimator.Play("Closed");
         creditsAnimator.Play("Closed");
@@ -93,8 +103,12 @@ public class MenuUI : MonoBehaviour {
         } else {
             Resume();
             startTime = Time.realtimeSinceStartup;
-            enemySettings.targetWeight = targetWeight;
-            enemySettings.shootingEnabled = true;
+            droneSettings.targetWeight = droneTargetWeight;
+            droneSettings.shootingEnabled = true;
+            cannonSettings.targetWeight = cannonTargetWeight;
+            cannonSettings.shootingEnabled = true;
+            fighterSettings.targetWeight = fighterTargetWeight;
+            fighterSettings.shootingEnabled = true;
             musicManager.ChangeAudioState(musicManager.levelOneMusic);
             gameStarted = true;
         }

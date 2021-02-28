@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5616c997094ce4fbcbd867bc8ef685e0, type: 3}
   m_Name: Fighter Settings
   m_EditorClassIdentifier: 
-  viewDistance: 8
+  viewDistance: 15
   viewAngle: 150
-  shootingEnabled: 0
+  shootingEnabled: 1
   shootDistance: 40
-  shootAngle: 20
+  shootAngle: 50
   seperationWeight: 25
   alignmentWeight: 14
   cohesionWeight: 13
-  targetWeight: 16
+  targetWeight: 30
   targetDistance: 0
   targetDistanceWeight: 20
-  maxSpeed: 30
-  minSpeed: 10
+  maxSpeed: 50
+  minSpeed: 20
   positionLimitForce: 20
   positionLimitWeight: 1
   size: {x: 100, y: 100}

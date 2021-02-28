@@ -7,17 +7,19 @@ public class EnemyManager : MonoBehaviour {
 
     public EnemySettings droneEnemySettings;
     public Drone droneEnemyPrefab;
+    public GameObject bulletPrefab;
+    public Transform bulletParent;
     public int numOfDronesToSpawn;
     public EnemySettings cannonEnemySettings;
     public Cannon cannonEnemyPrefab;
     public int numOfCannonsToSpawn;
     public EnemySettings fighterEnemySettings;
     public Fighter fighterEnemyPrefab;
+    public GameObject missilePrefab;
+    public Transform missileParent;
     public int numOfFightersToSpawn;
     public ComputeShader compute;
     public GameObject player;
-    public GameObject bulletPrefab;
-    public Transform bulletParent;
     
     bool enemiesHaveBeenSpawned = false;
     List<Enemy> enemies = new List<Enemy>();
@@ -115,6 +117,8 @@ public class EnemyManager : MonoBehaviour {
             enemy.enemySettings = fighterEnemySettings;
             enemy.enemyManager = this;
             enemy.player = player;
+            enemy.missilePrefab = missilePrefab;
+            enemy.missileParent = missileParent;
             enemies.Add(enemy);
         }
     }

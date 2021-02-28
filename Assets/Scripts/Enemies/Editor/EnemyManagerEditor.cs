@@ -9,11 +9,15 @@ public class EnemyManagerEditor : Editor {
 
         SerializedProperty droneEnemySettings_prop = serializedObject.FindProperty("droneEnemySettings");
         SerializedProperty droneEnemyPrefab_prop = serializedObject.FindProperty("droneEnemyPrefab");
+        SerializedProperty bulletPrefab_prop = serializedObject.FindProperty("bulletPrefab");
+        SerializedProperty bulletParent_prop = serializedObject.FindProperty("bulletParent");
         SerializedProperty numOfDronesToSpawn_prop = serializedObject.FindProperty("numOfDronesToSpawn");
 
         EditorGUILayout.LabelField("Drone Settings", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(droneEnemySettings_prop, new GUIContent("Settings"));
         EditorGUILayout.PropertyField(droneEnemyPrefab_prop, new GUIContent("Prefab"));
+        EditorGUILayout.PropertyField(bulletPrefab_prop, new GUIContent("Bullet Prefab"));
+        EditorGUILayout.PropertyField(bulletParent_prop, new GUIContent("Bullet Parent"));
         EditorGUILayout.PropertyField(numOfDronesToSpawn_prop, new GUIContent("No. to Spawn"));
 
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -33,11 +37,15 @@ public class EnemyManagerEditor : Editor {
 
         SerializedProperty fighterEnemySettings_prop = serializedObject.FindProperty("fighterEnemySettings");
         SerializedProperty fighterEnemyPrefab_prop = serializedObject.FindProperty("fighterEnemyPrefab");
+        SerializedProperty missilePrefab_prop = serializedObject.FindProperty("missilePrefab");
+        SerializedProperty missileParent_propt = serializedObject.FindProperty("missileParent");
         SerializedProperty numOfFightersToSpawn_prop = serializedObject.FindProperty("numOfFightersToSpawn");
 
         EditorGUILayout.LabelField("Fighter Settings", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(fighterEnemySettings_prop, new GUIContent("Settings"));
         EditorGUILayout.PropertyField(fighterEnemyPrefab_prop, new GUIContent("Prefab"));
+        EditorGUILayout.PropertyField(missilePrefab_prop, new GUIContent("Missile Prefab"));
+        EditorGUILayout.PropertyField(missileParent_propt, new GUIContent("Missile Parent"));
         EditorGUILayout.PropertyField(numOfFightersToSpawn_prop, new GUIContent("No. to Spawn"));
         
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -47,10 +55,6 @@ public class EnemyManagerEditor : Editor {
         EditorGUILayout.PropertyField(compute_prop, new GUIContent("Compute Shader"));
         SerializedProperty player_prop = serializedObject.FindProperty("player");
         EditorGUILayout.PropertyField(player_prop, new GUIContent("Player"));
-        SerializedProperty bulletPrefab_prop = serializedObject.FindProperty("bulletPrefab");
-        EditorGUILayout.PropertyField(bulletPrefab_prop, new GUIContent("Bullet Prefab"));
-        SerializedProperty bulletParent_prop = serializedObject.FindProperty("bulletParent");
-        EditorGUILayout.PropertyField(bulletParent_prop, new GUIContent("Bullet Parent"));
 
         serializedObject.ApplyModifiedProperties();
     }

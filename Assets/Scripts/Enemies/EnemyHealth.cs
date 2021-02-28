@@ -5,6 +5,8 @@ public class EnemyHealth : MonoBehaviour {
 
     [SerializeField]
     int health;
+    [SerializeField]
+    EnemyType enemyType;
     bool isDead = false;
     Enemy enemy;
     EnemyManager enemyManager;
@@ -19,7 +21,7 @@ public class EnemyHealth : MonoBehaviour {
 
         if (health <= 0 && !isDead) {
             //LogMessage.Send(this.gameObject, $"Took {damage} damage and died!");
-            gameUI.AddScore(EnemyType.Drone);
+            gameUI.AddScore(enemyType);
             Die();
         }
     }
