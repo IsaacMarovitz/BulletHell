@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     public float maxTurnAngle = 150;
     public GameObject bulletPrefab;
     public float gunCooldown = 0.1f;
+    public Image cooldownImage;
     public Transform bulletSpawn;
     public Transform bulletParent;
     public GameUI gameUI;
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour {
         } else {
             cooldownLeft -= Time.deltaTime;
         }
+        cooldownImage.fillAmount = 1 - (cooldownLeft / gunCooldown);
         if (this.transform.position.x > 400 || this.transform.position.x < -400) {
             this.transform.position = new Vector3(0, 0, this.transform.position.z);
         }
