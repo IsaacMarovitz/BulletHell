@@ -1352,7 +1352,7 @@ MonoBehaviour:
   fighterEnemyPrefab: {fileID: 3658879625952979723, guid: 703ec75d8f2cc4fff8049bacb98c029f, type: 3}
   missilePrefab: {fileID: 5761913303680681416, guid: 57d6ba566aebb464ea14ac5ee1840231, type: 3}
   missileParent: {fileID: 1021285713}
-  numOfFightersToSpawn: 15
+  numOfFightersToSpawn: 0
   compute: {fileID: 7200000, guid: cc6121bf3f3ca4bb69638fbe03148bbf, type: 3}
   player: {fileID: 1589297669}
 --- !u!4 &163633483
@@ -12913,6 +12913,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   currentMusic:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   musicPlayer: {fileID: 1659618522}
   audioMixer: {fileID: 24100000, guid: c44f885420c19465083309625ea0f755, type: 2}
