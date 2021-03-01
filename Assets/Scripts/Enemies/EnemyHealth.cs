@@ -10,6 +10,7 @@ public class EnemyHealth : MonoBehaviour {
     bool isDead = false;
     Enemy enemy;
     EnemyManager enemyManager;
+    public GameObject deathParticles;
 
     public void Start() {
         enemy = GetComponent<Enemy>();
@@ -27,6 +28,7 @@ public class EnemyHealth : MonoBehaviour {
     }
 
     public void Die() {
+        GameObject.Instantiate(deathParticles, this.transform.position, Quaternion.identity);
         isDead = true;
         //LogMessage.Send(this.gameObject, "Died!");
         enemyManager.RemoveEnemy(enemy);

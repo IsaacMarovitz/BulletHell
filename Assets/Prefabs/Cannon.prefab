@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 150
   enemyType: 0
+  deathParticles: {fileID: 3473362717848382406, guid: 64258094b1d84474eba93f042b5a6eab, type: 3}
 --- !u!114 &1094015369602225868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +103,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 913c5111e35d647a4a1248d062920803, type: 2}
+  - {fileID: 2100000, guid: 4ae7b385351bf446caa27630dc05a16c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -175,6 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 500
   enemyType: 2
+  deathParticles: {fileID: 3473362717848382406, guid: 64258094b1d84474eba93f042b5a6eab, type: 3}
 --- !u!114 &3658879625952979723
 MonoBehaviour:
   m_ObjectHideFlags: 0

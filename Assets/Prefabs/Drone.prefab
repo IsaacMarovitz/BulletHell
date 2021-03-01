@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
+  enemyType: 0
+  deathParticles: {fileID: 3473362717848382406, guid: 64258094b1d84474eba93f042b5a6eab, type: 3}
 --- !u!114 &6095559454365088367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +213,6 @@ MonoBehaviour:
   debug: 0
   enemyManager: {fileID: 0}
   player: {fileID: 0}
-  enemy: {fileID: 0}
   bulletPrefab: {fileID: 0}
   shoot: 0
   gunCooldown: 0.1
