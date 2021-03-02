@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using TMPro;
 
-public class DeathUI : MonoBehaviour {
+public class DeathUI : UIMenuBase {
 
     public MenuUI menuUI;
     public GameUI gameUI;
@@ -15,9 +15,15 @@ public class DeathUI : MonoBehaviour {
     public GameObject loadingMenu;
     public Slider loadingSlider;
     
-    void Start() {
+    public override void Start() {
+        base.Start();
         mainMenu.onClick.AddListener(MainMenu);
         quit.onClick.AddListener(Quit);
+    }
+
+    public override void OpenMenu() {
+        base.OpenMenu();
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(mainMenu.gameObject);
     }
 
     void Update() {

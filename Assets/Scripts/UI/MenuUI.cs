@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 using Cinemachine;
 using TMPro;
 using System.Collections;
@@ -27,15 +28,13 @@ public class MenuUI : MonoBehaviour {
     public Slider loadingSlider;
     public GameUI gameUI;
     public SettingsUI settingsUI;
-    public Animator settingsAnimator;
-    public Animator scoreboardAnimator;
-    public Animator creditsAnimator;
-    public Animator textCreditsAnimator;
-    public Animator deathAnimator;
-    [HideInInspector]
-    public CurrentMenu currentMenu;
+    public ScoreboardUI scoreboardUI;
+    public CreditsUI creditsUI;
+    public DeathUI deathUI;
     public int pauseFadeDuration;
     public AnimationCurve timeCurve;
+    public PlayerInput playerInput;
+    public CurrentMenu currentMenu;
 
     float droneTargetWeight;
     float cannonTargetWeight;
@@ -44,14 +43,13 @@ public class MenuUI : MonoBehaviour {
     float pauseStartTime;
     float pauseTime;
     bool gameStarted = false;
-    bool gamePaused = false;
     bool gameEnded = false;
 
     void Start() {
         newGameButton.onClick.AddListener(NewGame);
-        settingsButton.onClick.AddListener(Settings);
-        scoreboardButton.onClick.AddListener(Scoreboard);
-        creditsButton.onClick.AddListener(Credits);
+        settingsButton.onClick.AddListener(() => OpenMenu(settingsUI, CurrentMenu.Settings));
+        scoreboardButton.onClick.AddListener(() => OpenMenu(scoreboardUI, CurrentMenu.Scoreboard));
+        creditsButton.onClick.AddListener(() => OpenMenu(creditsUI, CurrentMenu.Credits));
         mainMenuButton.onClick.AddListener(MainMenu);
         quitButton.onClick.AddListener(Quit);
         mainMenuButton.gameObject.SetActive(false);
@@ -64,34 +62,10 @@ public class MenuUI : MonoBehaviour {
         fighterTargetWeight = fighterSettings.targetWeight;
         fighterSettings.targetWeight = 0;
         fighterSettings.shootingEnabled = false;
-        settingsAnimator.Play("Closed");
-        scoreboardAnimator.Play("Closed");
-        creditsAnimator.Play("Closed");
-        deathAnimator.Play("Closed");
         currentMenu = CurrentMenu.Main;
         Cursor.visible = true;
         Time.timeScale = 1;
-    }
-
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape) && gameStarted && !gameEnded) {
-            if (gamePaused) {
-                Resume();
-                pauseTime += (Time.realtimeSinceStartup - pauseStartTime);
-                musicManager.Resume();
-                StartCoroutine(FadeTime(1, pauseFadeDuration));
-            } else {
-                gamePaused = true;
-                pauseStartTime = Time.realtimeSinceStartup;
-                uiCamera.Priority = 20;
-                animator.Play("Fade In");
-                gameUI.gameObject.SetActive(false);
-                playerMovement.move = false;
-                musicManager.Pause();
-                Cursor.visible = true;
-                StartCoroutine(FadeTime(0, pauseFadeDuration));
-            }
-        }
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(newGameButton.gameObject);
     }
 
     public void NewGame() {
@@ -115,7 +89,6 @@ public class MenuUI : MonoBehaviour {
     }
 
     public void Resume() {
-        gamePaused = false;
         gameEnded = false;
         uiCamera.Priority = 0;
         if (currentMenu == CurrentMenu.Main) {
@@ -127,13 +100,13 @@ public class MenuUI : MonoBehaviour {
         gameUI.gameObject.SetActive(true);
         playerMovement.move = true;
         Cursor.visible = false;
+        playerInput.SwitchCurrentActionMap("Movement");
     }
 
     public void Die() {
-        gamePaused = true;
         gameEnded = true;
         uiCamera.Priority = 20;
-        deathAnimator.Play("Fade In");
+        deathUI.animator.Play("Fade In");
         gameUI.gameObject.SetActive(false);
         playerMovement.move = false;
         musicManager.Pause();
@@ -151,23 +124,10 @@ public class MenuUI : MonoBehaviour {
         mainMenuButton.gameObject.SetActive(true);
     }
 
-    public void Settings() {
+    void OpenMenu(UIMenuBase menu, CurrentMenu newCurrentMenu) {
         animator.Play("Fade & Slide Out");
-        settingsAnimator.Play("Fade & Slide In");
-        currentMenu = CurrentMenu.Settings;
-    }
-
-    public void Scoreboard() {
-        animator.Play("Fade & Slide Out");
-        scoreboardAnimator.Play("Fade & Slide In");
-        currentMenu = CurrentMenu.Scoreboard;
-    }
-
-    public void Credits() {
-        animator.Play("Fade & Slide Out");
-        creditsAnimator.Play("Fade & Slide In");
-        textCreditsAnimator.Play("Scroll", -1, 0f);
-        currentMenu = CurrentMenu.Credits;
+        menu.OpenMenu();
+        currentMenu = newCurrentMenu;
     }
 
     public void MainMenu() {
@@ -178,6 +138,29 @@ public class MenuUI : MonoBehaviour {
 
     public void Quit() {
         Application.Quit();
+    }
+
+    public void OnPause(InputAction.CallbackContext value) {
+        if (value.started && gameStarted && !gameEnded) {
+            pauseStartTime = Time.realtimeSinceStartup;
+            uiCamera.Priority = 20;
+            animator.Play("Fade In");
+            gameUI.gameObject.SetActive(false);
+            playerMovement.move = false;
+            musicManager.Pause();
+            Cursor.visible = true;
+            playerInput.SwitchCurrentActionMap("Menu Controls");
+            StartCoroutine(FadeTime(0, pauseFadeDuration));
+        }
+    }
+
+    public void OnResume(InputAction.CallbackContext value) {
+        if (value.started && gameStarted && !gameEnded) {
+            Resume();
+            pauseTime += (Time.realtimeSinceStartup - pauseStartTime);
+            musicManager.Resume();
+            StartCoroutine(FadeTime(1, pauseFadeDuration));
+        }
     }
 
     public IEnumerator FadeTime(float end, float duration) {

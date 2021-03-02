@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoreboardUI : MonoBehaviour {
+public class ScoreboardUI : UIMenuBase {
 
-    public Animator scoreboardAnimator;
     public MenuUI menuUI;
     public Button backButton;
     public Transform scoreboardEntryParent;
@@ -11,7 +10,8 @@ public class ScoreboardUI : MonoBehaviour {
     public Color primaryColor;
     public Color secondaryColor;
 
-    void Start() {
+    public override void Start() {
+        base.Start();
         backButton.onClick.AddListener(Back);
 
         SaveData saveData = SaveSystem.Load();
@@ -29,10 +29,16 @@ public class ScoreboardUI : MonoBehaviour {
         }
     }
 
+    public override void OpenMenu() {
+        base.OpenMenu();
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(backButton.gameObject);
+    }
+
     void Back() {
-        scoreboardAnimator.Play("Fade & Slide Out");
+        animator.Play("Fade & Slide Out");
         menuUI.animator.Play("Fade & Slide In");
         menuUI.currentMenu = CurrentMenu.Main;
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(menuUI.scoreboardButton.gameObject);
     }
 
     string SecondsToString(float seconds) {

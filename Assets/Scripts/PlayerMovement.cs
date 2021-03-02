@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -18,25 +19,17 @@ public class PlayerMovement : MonoBehaviour {
     public AudioClip gunSFX;
     public GameObject rotationIndicatorParent;
     public Image rotationIndicator;
+    public PlayerInput playerInput;
 
     float cooldownLeft;
     Vector3 lastPosition;
+    Vector3 moveDir;
     float speed;
+    bool shoot;
 
     void Update() {
         if (!move) 
             return;
-        if (cooldownLeft <= 0 && Input.GetMouseButton(0)) {
-            cooldownLeft = gunCooldown;
-            GameObject instantiatedBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
-            instantiatedBullet.transform.parent = bulletParent;
-            Bullet bullet = instantiatedBullet.GetComponent<Bullet>();
-            bullet.startingSpeed = speed;
-            bullet.gameUI = gameUI;
-            audioSource.PlayOneShot(gunSFX);
-        } else {
-            cooldownLeft -= Time.deltaTime;
-        }
         cooldownImage.fillAmount = 1 - (cooldownLeft / gunCooldown);
         if (this.transform.position.x > 400 || this.transform.position.x < -400) {
             this.transform.position = new Vector3(0, 0, this.transform.position.z);
@@ -44,14 +37,20 @@ public class PlayerMovement : MonoBehaviour {
         if (this.transform.position.z > 400 || this.transform.position.z < -400) {
             this.transform.position = new Vector3(this.transform.position.x, 0, 0);
         }
+        
+        if (shoot)
+            Shoot();
 
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = 20;
+        if (playerInput.currentControlScheme == "Keyboard and Mouse") {
+            moveDir = Mouse.current.position.ReadValue();
+        }
+
+        moveDir.z = 20;
         Vector3 objectPosition = Camera.main.WorldToScreenPoint(this.transform.position);
-        mousePosition.x = mousePosition.x - objectPosition.x;
-        mousePosition.y = mousePosition.y - objectPosition.y;
-        float dist = Mathf.Clamp01((Mathf.Sqrt((mousePosition.x * mousePosition.x) + (mousePosition.y * mousePosition.y)) - 20) / 100);
-        float angle = -Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg + 90;
+        moveDir.x = moveDir.x - objectPosition.x;
+        moveDir.y = moveDir.y - objectPosition.y;
+        float dist = Mathf.Clamp01((Mathf.Sqrt((moveDir.x * moveDir.x) + (moveDir.y * moveDir.y)) - 20) / 100);
+        float angle = -Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg + 90;
         if (angle > 180) {
             angle = angle - 360;
         }
@@ -67,5 +66,30 @@ public class PlayerMovement : MonoBehaviour {
         this.transform.position += this.transform.right * moveSpeed * dist * Time.deltaTime;
         speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
         lastPosition = this.transform.position;
+    }
+
+    public void Shoot() {
+        if (cooldownLeft <= 0) {
+            cooldownLeft = gunCooldown;
+            GameObject instantiatedBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
+            instantiatedBullet.transform.parent = bulletParent;
+            Bullet bullet = instantiatedBullet.GetComponent<Bullet>();
+            bullet.startingSpeed = speed;
+            bullet.gameUI = gameUI;
+            audioSource.PlayOneShot(gunSFX);
+        } else {
+            cooldownLeft -= Time.deltaTime;
+        }
+    }
+
+    public void OnShoot(InputAction.CallbackContext value) {
+        if (value.performed) {
+            shoot = true;
+            return;
+        } else if (value.canceled) {
+            shoot = false;
+            return;
+        }
+        shoot = false;
     }
 }

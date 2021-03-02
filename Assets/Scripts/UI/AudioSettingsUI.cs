@@ -2,17 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-public class AudioSettingsUI : MonoBehaviour {
+public class AudioSettingsUI : UIMenuBase {
 
     public AudioMixer audioMixer;
     public Slider masterSlider;
     public Slider sfxSlider;
     public Slider musicSlider;
-    public Animator audioSettingsAnimator;
     public SettingsUI settingsUI;
     public Button backButton;
 
-    void Start() {
+    public override void Start() {
+        base.Start();
         masterSlider.onValueChanged.AddListener(SetMaster);
         sfxSlider.onValueChanged.AddListener(SetSFX);
         musicSlider.onValueChanged.AddListener(SetMusic);
@@ -30,6 +30,11 @@ public class AudioSettingsUI : MonoBehaviour {
         }
     }
 
+    public override void OpenMenu() {
+        base.OpenMenu();
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(masterSlider.gameObject);
+    }
+
     public void SetMaster(float value) {
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20);
     }
@@ -44,9 +49,10 @@ public class AudioSettingsUI : MonoBehaviour {
     }
 
     public void Back() {
-        audioSettingsAnimator.Play("Fade & Slide Out");
+        animator.Play("Fade & Slide Out");
         settingsUI.animator.Play("Fade & Slide In");
         settingsUI.currentSettingsMenu = CurrentSettingsMenu.Main;
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(settingsUI.audioSettingsButton.gameObject);
         SaveSystem.SaveAudioSettings(masterSlider.value, sfxSlider.value, musicSlider.value);
     }
 }

@@ -1,19 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreditsUI : MonoBehaviour {
+public class CreditsUI : UIMenuBase {
 
-    public Animator creditsAnimator;
+    public Animator textAnimator;
     public MenuUI menuUI;
     public Button backButton;
 
-    void Start() {
+    public override void Start() {
+        base.Start();
         backButton.onClick.AddListener(Back);
     }
 
+    public override void OpenMenu() {
+        base.OpenMenu();
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(backButton.gameObject);
+        textAnimator.Play("Scroll", -1, 0f);
+    }
+
     void Back() {
-        creditsAnimator.Play("Fade & Slide Out");
+        animator.Play("Fade & Slide Out");
         menuUI.animator.Play("Fade & Slide In");
         menuUI.currentMenu = CurrentMenu.Main;
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(menuUI.creditsButton.gameObject);
     }
 }

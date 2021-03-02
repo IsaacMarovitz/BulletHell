@@ -3,20 +3,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class VideoSettingsUI : MonoBehaviour {
+public class VideoSettingsUI : UIMenuBase {
 
     public TMP_Dropdown resolutionDropdown;
     public TMP_Dropdown qualityDropdown;
     public Toggle vsyncToggle;
     public Toggle fullscreenToggle;
-    public Animator videoSettingsAnimator;
     public SettingsUI settingsUI;
     public Button backButton;
 
     Resolution[] resolutions;
     List<Resolution> dropdownResolutions = new List<Resolution>();
 
-    public void Start() {
+    public override void Start() {
+        base.Start();
+        #if UNITY_IOS
+            Application.targetFrameRate = 60;
+            resolutionDropdown.transform.parent.gameObject.SetActive(false);
+            vsyncToggle.transform.parent.gameObject.SetActive(false);
+            fullscreenToggle.transform.parent.gameObject.SetActive(false);
+        #endif
         resolutions = Screen.resolutions;
         backButton.onClick.AddListener(Back);
 
@@ -72,6 +78,11 @@ public class VideoSettingsUI : MonoBehaviour {
         }
     }
 
+    public override void OpenMenu() {
+        base.OpenMenu();
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(resolutionDropdown.gameObject);
+    }
+
     public void VSync(bool value) {
         if (value) {
             QualitySettings.vSyncCount = 1;
@@ -101,9 +112,10 @@ public class VideoSettingsUI : MonoBehaviour {
     }
 
     public void Back() {
-        videoSettingsAnimator.Play("Fade & Slide Out");
+        animator.Play("Fade & Slide Out");
         settingsUI.animator.Play("Fade & Slide In");
         settingsUI.currentSettingsMenu = CurrentSettingsMenu.Main;
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(settingsUI.videoSettingsButton.gameObject);
         SaveSystem.SaveResolution();
     }
 }
