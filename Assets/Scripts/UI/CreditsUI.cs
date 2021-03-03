@@ -12,6 +12,7 @@ public class CreditsUI : UIMenuBase {
         backButton.onClick.AddListener(Back);
     }
 
+    // Open menu and re-start text scroll animation
     public override void OpenMenu() {
         base.OpenMenu();
         UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(backButton.gameObject);

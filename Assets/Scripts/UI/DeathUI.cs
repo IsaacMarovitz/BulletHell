@@ -40,6 +40,7 @@ public class DeathUI : UIMenuBase {
         Application.Quit();
     }
 
+    // IEnumerator to asynchronously load the main scene again
     IEnumerator LoadAysnc(int sceneIndex) {
         AsyncOperation loadScene = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single);
 

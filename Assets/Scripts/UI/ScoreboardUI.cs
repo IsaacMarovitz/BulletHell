@@ -10,6 +10,7 @@ public class ScoreboardUI : UIMenuBase {
     public Color primaryColor;
     public Color secondaryColor;
 
+    // Load run adata and populate the scoreboard table with the runs
     public override void Start() {
         base.Start();
         backButton.onClick.AddListener(Back);
@@ -41,6 +42,7 @@ public class ScoreboardUI : UIMenuBase {
         UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(menuUI.scoreboardButton.gameObject);
     }
 
+    // Helper function to convert strings to a 02:30 style string of minutes and seconds
     string SecondsToString(float seconds) {
         int minutes = Mathf.FloorToInt(seconds / 60);
         int remainingSeconds = Mathf.RoundToInt(seconds) - minutes * 60;

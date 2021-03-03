@@ -12,6 +12,8 @@ public class GameUI : MonoBehaviour {
     public Slider healthSlider;
     public PlayerHealth playerHealth;
 
+    // Stores for each enemy type stored here. In the feature I might want
+    // to replace these hard-coded values with something more flexible
     int[] scores = { 10, 50, 25 };
     string[] names = { "DRONE", "CANNON", "FIGHTER" };
     int newScoreTextScore = 0;

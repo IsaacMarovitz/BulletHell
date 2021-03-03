@@ -46,6 +46,12 @@ public class MenuUI : MonoBehaviour {
     bool gameStarted = false;
     bool gameEnded = false;
 
+    /*
+    This script handles the main UI menu as well as starting, pausing, and resuming
+    the game, as a result this script is a little unweildy
+    */
+
+    // Setup button delegates and alter enemy settings to stop from firing at player
     void Start() {
         newGameButton.onClick.AddListener(NewGame);
         settingsButton.onClick.AddListener(() => OpenMenu(settingsUI, CurrentMenu.Settings));

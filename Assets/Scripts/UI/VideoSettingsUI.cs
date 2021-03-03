@@ -15,8 +15,10 @@ public class VideoSettingsUI : UIMenuBase {
     Resolution[] resolutions;
     List<Resolution> dropdownResolutions = new List<Resolution>();
 
+    // Load saved video settings and video settings UI to correctly match current settings
     public override void Start() {
         base.Start();
+        // If on iOS hide several unsuable settings and set target frame rate
         #if UNITY_IOS
             Application.targetFrameRate = 60;
             resolutionDropdown.transform.parent.gameObject.SetActive(false);

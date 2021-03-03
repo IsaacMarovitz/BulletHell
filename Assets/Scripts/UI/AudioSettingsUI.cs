@@ -11,6 +11,7 @@ public class AudioSettingsUI : UIMenuBase {
     public SettingsUI settingsUI;
     public Button backButton;
 
+    // Set up slider delagate and load in saved audio values
     public override void Start() {
         base.Start();
         masterSlider.onValueChanged.AddListener(SetMaster);
@@ -35,6 +36,7 @@ public class AudioSettingsUI : UIMenuBase {
         UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(masterSlider.gameObject);
     }
 
+    // Set the value of the master volume converting linear slider to logarithmic decibels
     public void SetMaster(float value) {
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20);
     }
