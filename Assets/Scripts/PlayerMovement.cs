@@ -30,6 +30,8 @@ public class PlayerMovement : MonoBehaviour {
     void Update() {
         if (!move) 
             return;
+
+        // Update cooldown image
         cooldownImage.fillAmount = 1 - (cooldownLeft / gunCooldown);
         if (this.transform.position.x > 400 || this.transform.position.x < -400) {
             this.transform.position = new Vector3(0, 0, this.transform.position.z);
@@ -38,13 +40,27 @@ public class PlayerMovement : MonoBehaviour {
             this.transform.position = new Vector3(this.transform.position.x, 0, 0);
         }
         
-        if (shoot)
-            Shoot();
+        // If can shoot, shoot
+        if (shoot) {
+            if (cooldownLeft <= 0) {
+                cooldownLeft = gunCooldown;
+                GameObject instantiatedBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
+                instantiatedBullet.transform.parent = bulletParent;
+                Bullet bullet = instantiatedBullet.GetComponent<Bullet>();
+                bullet.startingSpeed = speed;
+                bullet.gameUI = gameUI;
+                audioSource.PlayOneShot(gunSFX);
+            } else {
+                cooldownLeft -= Time.deltaTime;
+            }
+        }
 
         if (playerInput.currentControlScheme == "Keyboard and Mouse") {
             moveDir = Mouse.current.position.ReadValue();
         }
 
+        // Turns and moves the player towards the current mouse position relative to the player
+        // and updates the rotationIndicator to show the new rotation without any lerping
         moveDir.z = 20;
         Vector3 objectPosition = Camera.main.WorldToScreenPoint(this.transform.position);
         moveDir.x = moveDir.x - objectPosition.x;
@@ -68,20 +84,7 @@ public class PlayerMovement : MonoBehaviour {
         lastPosition = this.transform.position;
     }
 
-    public void Shoot() {
-        if (cooldownLeft <= 0) {
-            cooldownLeft = gunCooldown;
-            GameObject instantiatedBullet = GameObject.Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
-            instantiatedBullet.transform.parent = bulletParent;
-            Bullet bullet = instantiatedBullet.GetComponent<Bullet>();
-            bullet.startingSpeed = speed;
-            bullet.gameUI = gameUI;
-            audioSource.PlayOneShot(gunSFX);
-        } else {
-            cooldownLeft -= Time.deltaTime;
-        }
-    }
-
+    // Sets up Input System callback event for when the 'Shoot' Input Action is triggered
     public void OnShoot(InputAction.CallbackContext value) {
         if (value.performed) {
             shoot = true;

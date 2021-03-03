@@ -10,6 +10,8 @@ public class Missile : MonoBehaviour {
     public int explosionRadius = 5;
     public float startingSpeed;
 
+    // Move forward at a constant speed and rotate towards the player like a
+    // homing missile. If time runs out, detonate
     void Update() {
         Vector3 posOffset = this.transform.right * (missileSpeed + startingSpeed) * Time.deltaTime;
         Vector3 direction = player.position - this.transform.position;
@@ -45,6 +47,7 @@ public class Missile : MonoBehaviour {
         }
     }
 
+    // Find all players in a given radius and make them take damage
     void Detonate() {
         Collider[] colliders = Physics.OverlapSphere(this.transform.position, explosionRadius);
 

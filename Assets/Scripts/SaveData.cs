@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 
+// This script sets up the class and struct that will
+// get saved to disk
+
 [System.Serializable]
 public class SaveData {
     public List<Run> runs = new List<Run>();

@@ -20,6 +20,13 @@ public class MusicManager : MonoBehaviour {
     float currentClipPlaybackTime;
     bool nextSongStarted = false;
 
+    /*
+    This script finds and loads all music from different folders and then
+    will randomly play songs from the current song group while fading
+    between them. When the game is paused, a low pass filter is applied to
+    the audio mixer as well.
+    */
+
     void Start() {
         mainMenuMusic = Resources.LoadAll<AudioClip>("Music");
         levelOneMusic = Resources.LoadAll<AudioClip>("Level 1");
@@ -56,7 +63,7 @@ public class MusicManager : MonoBehaviour {
     public IEnumerator StartNextSong() {
         float currentTime = 0;
         while (currentTime < fadeDuration) {
-            currentTime += Time.unscaledDeltaTime;
+            currentTime += Time.fixedUnscaledDeltaTime;
             float pointAlongCurve = Mathf.Lerp(0, 1, currentTime / fadeDuration);
             musicPlayer.volume = fadeOutCurve.Evaluate(pointAlongCurve);
             yield return null;

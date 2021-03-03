@@ -8,6 +8,9 @@ public class Bullet : MonoBehaviour {
     public float startingSpeed;
     public GameUI gameUI;
 
+    // This moves a bullet at a constant bullet and start speed.
+    // If it runs out of decayTime or hits an object it'll be 
+    // destroyed.
     void Update() {
         Vector3 posOffset = this.transform.right * (bulletSpeed + startingSpeed) * Time.deltaTime;
 
@@ -23,6 +26,8 @@ public class Bullet : MonoBehaviour {
         }
     }
 
+    // Check to see if the bullet has hit an enemy, if so, make
+    // the enemy take damage and destory the bullet.
     void OnTriggerEnter(Collider collider) {
         if (collider.transform.tag == "Enemy") {
             collider.transform.gameObject.GetComponentInParent<EnemyHealth>()?.TakeDamage(damage, gameUI);

@@ -4,6 +4,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem {
 
+    /*
+    Save and load to and from a custom binary file in the presistant
+    data path on the user's system. This save system can be called from
+    anyway because it is static.
+    */
+
     public static void SaveResolution() {
         BinaryFormatter binaryFormatter = new BinaryFormatter();
         SaveData oldData = Load();
