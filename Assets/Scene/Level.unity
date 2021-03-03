@@ -278,8 +278,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11458023}
-  m_LocalRotation: {x: 0.40455356, y: -0.000000027456629, z: 0.000000012145984, w: 0.9145143}
-  m_LocalPosition: {x: 0.000002311264, y: 39.3994, z: -26.72673}
+  m_LocalRotation: {x: 0.40455353, y: -0.000000056324893, z: 0.000000024916432, w: 0.91451436}
+  m_LocalPosition: {x: 0.000002735947, y: 39.399403, z: -26.72673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 742420297}
@@ -14270,6 +14270,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   currentMusic:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   musicPlayer: {fileID: 1659618522}
   audioMixer: {fileID: 24100000, guid: c44f885420c19465083309625ea0f755, type: 2}
