@@ -66,6 +66,19 @@ public class MenuUI : MonoBehaviour {
         Cursor.visible = true;
         Time.timeScale = 1;
         UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(newGameButton.gameObject);
+        Application.runInBackground = true;
+    }
+
+    void OnApplicationFocus(bool hasFocus) {
+        if (!hasFocus && gameStarted && !gameEnded) {
+            Pause();
+        }
+    }
+
+    void OnApplicationPause(bool hasPaused) {
+        if (hasPaused && gameStarted && !gameEnded) {
+            Pause();
+        }
     }
 
     public void NewGame() {
@@ -103,16 +116,29 @@ public class MenuUI : MonoBehaviour {
         playerInput.SwitchCurrentActionMap("Movement");
     }
 
+    public void Pause() {
+        pauseStartTime = Time.realtimeSinceStartup;
+        uiCamera.Priority = 20;
+        animator.Play("Fade In");
+        gameUI.gameObject.SetActive(false);
+        playerMovement.move = false;
+        musicManager.Pause();
+        Cursor.visible = true;
+        playerInput.SwitchCurrentActionMap("Menu Controls");
+        StartCoroutine(FadeTime(0, pauseFadeDuration));
+    }
+
     public void Die() {
         gameEnded = true;
         uiCamera.Priority = 20;
-        deathUI.animator.Play("Fade In");
+        deathUI.OpenMenu();
         gameUI.gameObject.SetActive(false);
         playerMovement.move = false;
         musicManager.Pause();
         Cursor.visible = true;
         print($"<b>Save System:</b> Saving run: {gameUI.score}, {(Time.realtimeSinceStartup - startTime) - pauseTime}");
         SaveSystem.SaveRun(new Run(gameUI.score, (Time.realtimeSinceStartup - startTime) - pauseTime));
+        playerInput.SwitchCurrentActionMap("Menu Controls");
         StartCoroutine(FadeTime(0, pauseFadeDuration));
     }
 
@@ -142,15 +168,7 @@ public class MenuUI : MonoBehaviour {
 
     public void OnPause(InputAction.CallbackContext value) {
         if (value.started && gameStarted && !gameEnded) {
-            pauseStartTime = Time.realtimeSinceStartup;
-            uiCamera.Priority = 20;
-            animator.Play("Fade In");
-            gameUI.gameObject.SetActive(false);
-            playerMovement.move = false;
-            musicManager.Pause();
-            Cursor.visible = true;
-            playerInput.SwitchCurrentActionMap("Menu Controls");
-            StartCoroutine(FadeTime(0, pauseFadeDuration));
+            Pause();
         }
     }
 
