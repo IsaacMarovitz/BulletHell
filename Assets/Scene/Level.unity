@@ -278,8 +278,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11458023}
-  m_LocalRotation: {x: 0.40455353, y: -0.00000003954249, z: 0.000000017492404, w: 0.9145143}
-  m_LocalPosition: {x: 0.0000024890599, y: 39.3994, z: -26.72673}
+  m_LocalRotation: {x: 0.4045535, y: -0.00000009958754, z: 0.000000044054516, w: 0.91451436}
+  m_LocalPosition: {x: 0.000003610804, y: 39.3994, z: -26.726732}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 742420297}
@@ -1274,10 +1274,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 1417234852}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -1324,6 +1324,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 1994398769}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &163633481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,6 +1592,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &199718890
 GameObject:
   m_ObjectHideFlags: 0
@@ -3108,6 +3116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &383008685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3785,6 +3797,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &451182447
 GameObject:
   m_ObjectHideFlags: 0
@@ -4099,9 +4115,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 793695639}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -4162,6 +4178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &498623579
 GameObject:
   m_ObjectHideFlags: 0
@@ -4588,6 +4608,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &523836578
 GameObject:
   m_ObjectHideFlags: 0
@@ -5627,10 +5651,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 1311488296}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -5682,6 +5706,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 115310832}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &657634319
 GameObject:
   m_ObjectHideFlags: 0
@@ -5851,6 +5879,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &742420296
 GameObject:
   m_ObjectHideFlags: 3
@@ -6326,10 +6358,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1417234852}
+    m_SelectOnDown: {fileID: 491408163}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -6376,6 +6408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 589255160}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &808974155
 GameObject:
   m_ObjectHideFlags: 0
@@ -6582,6 +6618,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &852443591
 GameObject:
   m_ObjectHideFlags: 0
@@ -6918,10 +6958,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1311488296}
+    m_SelectOnDown: {fileID: 1467093676}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -6965,6 +7005,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 23265243}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &885398616
 GameObject:
   m_ObjectHideFlags: 0
@@ -9432,6 +9476,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1168391895
 GameObject:
   m_ObjectHideFlags: 0
@@ -10369,8 +10417,8 @@ MonoBehaviour:
   videoSettingsButton: {fileID: 699883466}
   audioSettingsButton: {fileID: 1277038697}
   backButton: {fileID: 1658999944}
-  videoSettingsAnimator: {fileID: 2050522434}
-  audioSettingsAnimator: {fileID: 555464072}
+  videoSettingsUI: {fileID: 2050522435}
+  audioSettingsUI: {fileID: 555464073}
   menuUI: {fileID: 1168391896}
   currentSettingsMenu: 0
 --- !u!225 &1274582382
@@ -10540,6 +10588,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1278827593
 GameObject:
   m_ObjectHideFlags: 0
@@ -10736,6 +10788,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1306358404
 GameObject:
   m_ObjectHideFlags: 0
@@ -10963,10 +11019,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 650128067}
+    m_SelectOnDown: {fileID: 872807300}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -11024,6 +11080,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 1093247376}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1320867022
 GameObject:
   m_ObjectHideFlags: 0
@@ -11842,10 +11902,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 145361290}
+    m_SelectOnDown: {fileID: 793695639}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -11892,6 +11952,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 1242326480}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1421773732
 GameObject:
   m_ObjectHideFlags: 0
@@ -12145,10 +12209,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 872807300}
+    m_SelectOnDown: {fileID: 1700411934}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -12192,6 +12256,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 1179066197}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1517982669
 GameObject:
   m_ObjectHideFlags: 0
@@ -13214,6 +13282,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1659618515
 GameObject:
   m_ObjectHideFlags: 0
@@ -13881,9 +13953,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 1467093676}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -13944,6 +14016,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1709702329
 GameObject:
   m_ObjectHideFlags: 0
@@ -14396,6 +14472,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1797324830
 GameObject:
   m_ObjectHideFlags: 0
@@ -14699,6 +14779,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &1837085746
 GameObject:
   m_ObjectHideFlags: 0
@@ -16433,6 +16517,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!1 &2133665842
 GameObject:
   m_ObjectHideFlags: 0
@@ -16637,6 +16725,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80060c43ce35f4802823dc39c107e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedText: {fileID: 0}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4290032820
 --- !u!4 &543450653322893201
 Transform:
   m_ObjectHideFlags: 0

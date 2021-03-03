@@ -58,7 +58,7 @@ public class VideoSettingsUI : UIMenuBase {
 
         SaveData saveData = SaveSystem.Load();
         if (saveData != null) {
-            int index = resolutionDropdown.options.IndexOf(new TMP_Dropdown.OptionData(SaveResolutionToString(saveData.resolutionDim)));
+            int index = resolutionDropdown.options.FindIndex((i) => { return i.text.Equals(SaveResolutionToString(saveData.resolutionDim)); });
             if (index >= 0) {
                 SetResolution(index);
                 resolutionDropdown.value = index;

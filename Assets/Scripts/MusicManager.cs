@@ -72,7 +72,7 @@ public class MusicManager : MonoBehaviour {
     public IEnumerator FadeIn() {
         float currentTime = 0;
         while (currentTime < fadeDuration) {
-            currentTime += Time.unscaledDeltaTime;
+            currentTime += Time.fixedUnscaledDeltaTime;
             float pointAlongCurve = Mathf.Lerp(0, 1, currentTime / fadeDuration);
             musicPlayer.volume = fadeInCurve.Evaluate(pointAlongCurve);
             yield return null;
@@ -83,7 +83,7 @@ public class MusicManager : MonoBehaviour {
     public IEnumerator FadeLowpassIn() {
         float currentTime = 0;
         while (currentTime < lowpassFadeDiraton) {
-            currentTime += Time.unscaledDeltaTime;
+            currentTime += Time.fixedUnscaledDeltaTime;
             float pointAlongCurve = Mathf.Lerp(0, 1, currentTime / lowpassFadeDiraton);
             audioMixer.SetFloat("MusicLowpassCutoff", fadeLowpassInCurve.Evaluate(pointAlongCurve) * 21700 + 300);
             yield return null;
@@ -94,7 +94,7 @@ public class MusicManager : MonoBehaviour {
     public IEnumerator FadeLowpassOut() {
         float currentTime = 0;
         while (currentTime < lowpassFadeDiraton) {
-            currentTime += Time.unscaledDeltaTime;
+            currentTime += Time.fixedUnscaledDeltaTime;
             float pointAlongCurve = Mathf.Lerp(0, 1, currentTime / lowpassFadeDiraton);
             audioMixer.SetFloat("MusicLowpassCutoff", fadeLowpassOutCurve.Evaluate(pointAlongCurve) * 21700 + 300);
             yield return null;
