@@ -20,8 +20,10 @@ public class EnemyManager : MonoBehaviour {
     public int numOfFightersToSpawn;
     public ComputeShader compute;
     public GameObject player;
+    public MenuUI menuUI;
     
     bool enemiesHaveBeenSpawned = false;
+    bool hasWon = false;
     List<Enemy> enemies = new List<Enemy>();
 
     public void LateUpdate() {
@@ -32,39 +34,46 @@ public class EnemyManager : MonoBehaviour {
     }
 
     public void Update() {
-        if (enemies.Count > 0) {
-            int numEnemies = enemies.Count;
-            EnemyData[] enemyData = new EnemyData[numEnemies];
+        if (enemiesHaveBeenSpawned) {
+            if (enemies.Count > 0) {
+                int numEnemies = enemies.Count;
+                EnemyData[] enemyData = new EnemyData[numEnemies];
 
-            for (int i = 0; i < numEnemies; i++) {
-                enemyData[i].position = enemies[i].position;
-                enemyData[i].velocity = enemies[i].velocity;
+                for (int i = 0; i < numEnemies; i++) {
+                    enemyData[i].position = enemies[i].position;
+                    enemyData[i].velocity = enemies[i].velocity;
+                }
+
+                int size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(EnemyData));
+                ComputeBuffer enemyBuffer = new ComputeBuffer(numEnemies, size);
+                enemyBuffer.SetData(enemyData);
+
+                compute.SetBuffer(0, "enemies", enemyBuffer);
+                compute.SetInt("numEnemies", numEnemies);
+                compute.SetFloat("viewDistance", droneEnemySettings.viewDistance);
+                compute.SetFloat("viewAngle", droneEnemySettings.viewAngle);
+
+                int threadGroups = Mathf.CeilToInt(numEnemies / (float)threadGroupSize);
+                compute.Dispatch(0, threadGroups, 1, 1);
+
+                enemyBuffer.GetData(enemyData);
+
+                for (int i = 0; i < numEnemies; i++) {
+                    enemies[i].seperationVector = enemyData[i].seperationVector;
+                    enemies[i].alignmentVector = enemyData[i].alignmentVector;
+                    enemies[i].cohesionVector = enemyData[i].cohesionVector;
+                    enemies[i].numPerceivedEnemies = enemyData[i].numPerceivedEnemies;
+
+                    enemies[i].UpdateEnemy();
+                }
+
+                enemyBuffer.Release();
+            } else {
+                if (!hasWon) {
+                    menuUI.Win();
+                    hasWon = true;
+                }
             }
-
-            int size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(EnemyData));
-            ComputeBuffer enemyBuffer = new ComputeBuffer(numEnemies, size);
-            enemyBuffer.SetData(enemyData);
-
-            compute.SetBuffer(0, "enemies", enemyBuffer);
-            compute.SetInt("numEnemies", numEnemies);
-            compute.SetFloat("viewDistance", droneEnemySettings.viewDistance);
-            compute.SetFloat("viewAngle", droneEnemySettings.viewAngle);
-
-            int threadGroups = Mathf.CeilToInt(numEnemies / (float)threadGroupSize);
-            compute.Dispatch(0, threadGroups, 1, 1);
-
-            enemyBuffer.GetData(enemyData);
-
-            for (int i = 0; i < numEnemies; i++) {
-                enemies[i].seperationVector = enemyData[i].seperationVector;
-                enemies[i].alignmentVector = enemyData[i].alignmentVector;
-                enemies[i].cohesionVector = enemyData[i].cohesionVector;
-                enemies[i].numPerceivedEnemies = enemyData[i].numPerceivedEnemies;
-
-                enemies[i].UpdateEnemy();
-            }
-
-            enemyBuffer.Release();
         }
     }
 

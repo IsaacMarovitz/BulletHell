@@ -55,6 +55,8 @@ public class EnemyManagerEditor : Editor {
         EditorGUILayout.PropertyField(compute_prop, new GUIContent("Compute Shader"));
         SerializedProperty player_prop = serializedObject.FindProperty("player");
         EditorGUILayout.PropertyField(player_prop, new GUIContent("Player"));
+        SerializedProperty menuUI_prop = serializedObject.FindProperty("menuUI");
+        EditorGUILayout.PropertyField(menuUI_prop, new GUIContent("Menu UI"));
 
         serializedObject.ApplyModifiedProperties();
     }

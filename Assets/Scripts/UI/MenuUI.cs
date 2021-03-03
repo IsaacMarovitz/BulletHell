@@ -31,6 +31,7 @@ public class MenuUI : MonoBehaviour {
     public ScoreboardUI scoreboardUI;
     public CreditsUI creditsUI;
     public DeathUI deathUI;
+    public DeathUI winUI;
     public int pauseFadeDuration;
     public AnimationCurve timeCurve;
     public PlayerInput playerInput;
@@ -132,6 +133,20 @@ public class MenuUI : MonoBehaviour {
         gameEnded = true;
         uiCamera.Priority = 20;
         deathUI.OpenMenu();
+        gameUI.gameObject.SetActive(false);
+        playerMovement.move = false;
+        musicManager.Pause();
+        Cursor.visible = true;
+        print($"<b>Save System:</b> Saving run: {gameUI.score}, {(Time.realtimeSinceStartup - startTime) - pauseTime}");
+        SaveSystem.SaveRun(new Run(gameUI.score, (Time.realtimeSinceStartup - startTime) - pauseTime));
+        playerInput.SwitchCurrentActionMap("Menu Controls");
+        StartCoroutine(FadeTime(0, pauseFadeDuration));
+    }
+    
+    public void Win() {
+        gameEnded = true;
+        uiCamera.Priority = 20;
+        winUI.OpenMenu();
         gameUI.gameObject.SetActive(false);
         playerMovement.move = false;
         musicManager.Pause();
