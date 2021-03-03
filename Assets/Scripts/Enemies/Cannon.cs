@@ -15,6 +15,13 @@ public class Cannon : Enemy {
     float shootTime;
     Vector3 directionVector;
 
+    /*
+    This is the main script for an unimplemented third enemy type,
+    a cannon. I didn't end up having enough time to complete this 
+    enemy, but it would've been a laser-based enemy that would fire 
+    a laser that deals damage over time across the map aimed at the player.
+    */
+
     void Start() {
         cooldownLeft = Random.Range(minCooldown, maxCooldown);
     }

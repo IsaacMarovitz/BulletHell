@@ -4,7 +4,6 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     public EnemySettings enemySettings;
-
     public List<Enemy> nearbyEnemies = new List<Enemy>();
     public Vector2 position;
     public Vector2 velocity;
@@ -18,6 +17,12 @@ public class Enemy : MonoBehaviour {
     public bool debug = false;
     public EnemyManager enemyManager;
     public GameObject player;
+
+    /*
+    This is the base enemy class that all other enemies inherit from
+    it contains all the vectors and calculations for the boids logic
+    as well as some debug tools and gizmos
+    */
 
     void Start() {
         position = Vector3ToVector2(this.transform.position);
@@ -48,7 +53,10 @@ public class Enemy : MonoBehaviour {
             }
         }
     }
-
+    
+    // This function is called by the EnemyManager when it gets the values back from
+    // the compute shader. The vectors that it get's back are then error checked, and
+    // then applied to the position.
     public void UpdateEnemy() {
         Vector2 acceleration = Vector2.zero;
 
@@ -92,7 +100,8 @@ public class Enemy : MonoBehaviour {
         return targetDistanceVector;
     }
 
-
+    // Limits the position of enemies within the bounds of the map by applying a force that moves
+    // them back into the main area.
     public Vector2 LimitPosition() {
         Vector2 positionLimitVector = Vector2.zero;
 

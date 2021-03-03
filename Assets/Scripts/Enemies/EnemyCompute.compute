@@ -16,6 +16,14 @@ uint numEnemies;
 float viewDistance;
 float viewAngle;
 
+/*
+This is a compute shader writen in HLSL (High Level Shader Language).
+This compute shader calculates the correct values for each of vectors
+below, that are used to govern the boids logic. This is done in a compute
+shader so that I can take advantage of the GPU's much more efficant parallel
+processing power, as each of these vectors requires looping over every other boid.
+*/
+
 [numthreads(threadGroupSize,1,1)]
 void CSMain (uint3 id : SV_DispatchThreadID) {
     if (id.x >= numEnemies) {

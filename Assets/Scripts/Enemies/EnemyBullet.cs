@@ -7,6 +7,9 @@ public class EnemyBullet : MonoBehaviour {
     public int damage = 5;
     public float startingSpeed;
     
+    // This moves a bullet at a constant bullet and start speed.
+    // If it runs out of decayTime or hits an object it'll be 
+    // destroyed.
     void Update() {
         Vector3 posOffset = this.transform.right * (bulletSpeed + startingSpeed) * Time.deltaTime;
         if (float.IsNaN(posOffset.x) || float.IsNaN(posOffset.y) || float.IsNaN(posOffset.z)) {
@@ -20,6 +23,8 @@ public class EnemyBullet : MonoBehaviour {
         }
     }
 
+    // Check to see if the bullet has hit the player, if so, make
+    // the player take damage and destory the bullet.
     void OnTriggerEnter(Collider collider) {
         if (collider.transform.tag == "Player") {
             //Debug.Log("Player was hit!");

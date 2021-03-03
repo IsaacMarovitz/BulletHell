@@ -2,6 +2,13 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Enemy Settings")]
 public class EnemySettings : ScriptableObject {
+
+    /*
+    This is a scriptable object script that stores all of the
+    settings for the enemy boids. Each enemy type behaves slightly
+    differently, and so, has its own EnemySettings asset.
+    */
+
     [Header("Visibility")]
     [Range(0, 15)]
     public float viewDistance = 8;

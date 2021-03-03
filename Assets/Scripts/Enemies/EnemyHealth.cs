@@ -12,6 +12,12 @@ public class EnemyHealth : MonoBehaviour {
     EnemyManager enemyManager;
     public GameObject deathParticles;
 
+    /*
+    This is a simple enemy health script that stores the current
+    health of the enemy, allows it to take damage, and on death,
+    correctly destorys it, and spawns death particles.
+    */
+
     public void Start() {
         enemy = GetComponent<Enemy>();
         enemyManager = enemy.enemyManager;

@@ -26,6 +26,16 @@ public class EnemyManager : MonoBehaviour {
     bool hasWon = false;
     List<Enemy> enemies = new List<Enemy>();
 
+    /*
+    This is likely the most complex script in the game, and it 
+    is in charge of spawning the enenmeis on start, dispatching
+    the compute shader, retreaving the values from the shader, 
+    and then updating every enemy, every frame.
+    */
+
+    // I'm using the first frame of LateUpdate() here instead of 
+    // Start() as using start caused the enemies to not move when 
+    // reloading the scene.
     public void LateUpdate() {
         if (!enemiesHaveBeenSpawned) {
             enemiesHaveBeenSpawned = true;
@@ -34,39 +44,52 @@ public class EnemyManager : MonoBehaviour {
     }
 
     public void Update() {
+        // Don't control enemy behaviour if they haven't spawned yet
         if (enemiesHaveBeenSpawned) {
+            // If there are enemies still alive, update them, otherwise, the player has won
             if (enemies.Count > 0) {
                 int numEnemies = enemies.Count;
+                // Create a new enemyData array with the size of nunEnemies
                 EnemyData[] enemyData = new EnemyData[numEnemies];
 
+                // Add the information of each enemy to the array
                 for (int i = 0; i < numEnemies; i++) {
                     enemyData[i].position = enemies[i].position;
                     enemyData[i].velocity = enemies[i].velocity;
                 }
 
+                // Calculate the exact size in memory of EnemyData and then make a new 
+                // ComputeBuffer. The ComputeBuffer allows us to pass struct data back
+                // and forth easily.
                 int size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(EnemyData));
                 ComputeBuffer enemyBuffer = new ComputeBuffer(numEnemies, size);
                 enemyBuffer.SetData(enemyData);
 
+                // Set the variables inside the compute shader
                 compute.SetBuffer(0, "enemies", enemyBuffer);
                 compute.SetInt("numEnemies", numEnemies);
                 compute.SetFloat("viewDistance", droneEnemySettings.viewDistance);
                 compute.SetFloat("viewAngle", droneEnemySettings.viewAngle);
 
+                // Dispatch an appropiate amount of threads
                 int threadGroups = Mathf.CeilToInt(numEnemies / (float)threadGroupSize);
                 compute.Dispatch(0, threadGroups, 1, 1);
 
+                // Get the data back from the compute shader
                 enemyBuffer.GetData(enemyData);
 
+                // Give the enemies the newly computed data
                 for (int i = 0; i < numEnemies; i++) {
                     enemies[i].seperationVector = enemyData[i].seperationVector;
                     enemies[i].alignmentVector = enemyData[i].alignmentVector;
                     enemies[i].cohesionVector = enemyData[i].cohesionVector;
                     enemies[i].numPerceivedEnemies = enemyData[i].numPerceivedEnemies;
 
+                    // Call the update function on the enemy now it has the new values
                     enemies[i].UpdateEnemy();
                 }
 
+                // Release the memory of the buffer
                 enemyBuffer.Release();
             } else {
                 if (!hasWon) {
@@ -77,6 +100,8 @@ public class EnemyManager : MonoBehaviour {
         }
     }
 
+    // Spawn each enemy type, each for loop is almost the same except for a few minor details
+    // Each for loop spawns the appropriate number of enemies and places it at a random positon and rotation
     public void Spawn() {
         for (int i = 0; i < numOfDronesToSpawn; i++) {
             Vector3 position = new Vector3(Random.Range(-droneEnemySettings.size.x, droneEnemySettings.size.x), 0, Random.Range(-droneEnemySettings.size.y, droneEnemySettings.size.y));
@@ -136,6 +161,7 @@ public class EnemyManager : MonoBehaviour {
         enemies.Remove(enemy);
     }
 
+    // This struct is used for passing data to and from the compute shader
     public struct EnemyData {
         public Vector2 position;
         public Vector2 velocity;
