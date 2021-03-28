@@ -1,11 +1,14 @@
 using UnityEngine;
+using System.Collections;
 
 public class Cannon : Enemy {
 
     public LineRenderer lineRenderer;
     public float minCooldown;
     public float maxCooldown;
-    public float maxshootTime;
+    public float shootTimeLength;
+    public float timeToFire;
+    public float length = 100;
     public AudioSource audioSource;
     public AudioClip laserSFX;
     public float aimVariation;
@@ -13,6 +16,8 @@ public class Cannon : Enemy {
 
     float cooldownLeft;
     float shootTime;
+    bool shootComplete;
+    bool shootStarted;
     Vector3 directionVector;
 
     /*
@@ -28,17 +33,39 @@ public class Cannon : Enemy {
 
     void Update() {
         if (cooldownLeft <= 0) {
-            if (shootTime > 0) {
-                shootTime -= Time.deltaTime;
-                directionVector = (player.transform.position - this.transform.position).normalized;
-                lineRenderer.SetPosition(1, directionVector * 100);
-            } else {
-                shootTime = maxshootTime;
-                cooldownLeft  = Random.Range(minCooldown, maxCooldown);
+            directionVector = (player.transform.position - this.transform.position).normalized;
+
+            if (!shootStarted) {
+                shootStarted = true;
+                StartCoroutine(LerpLaserLength());
+            }
+
+            if (shootComplete) {
+                if (shootTime > 0) {
+                    shootTime -= Time.deltaTime;
+                } else {
+                    shootTime = shootTimeLength;
+                    cooldownLeft = Random.Range(minCooldown, maxCooldown);
+                    shootStarted = false;
+                }
             }
         } else {
             cooldownLeft -= Time.deltaTime;
         }
+    }
+
+    
+
+    public IEnumerator LerpLaserLength() {
+        float currentTime = 0;
+        shootComplete = false;
+        while (currentTime < timeToFire) {
+            currentTime += Time.deltaTime;
+            float distance = Mathf.Lerp(0, length, currentTime / timeToFire);
+            lineRenderer.SetPosition(1, directionVector * distance);
+            yield return null;
+        }
+        shootComplete = true;
     }
     
 }
